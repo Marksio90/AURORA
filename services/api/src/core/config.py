@@ -46,7 +46,7 @@ class Settings(BaseSettings):
     redis_enabled: bool = False
 
     # Security & CORS
-    allowed_origins: list[str] = ["http://localhost:3000"]
+    allowed_origins: str = "http://localhost:3000"
     cors_allow_credentials: bool = True
 
     # Logging
@@ -61,13 +61,12 @@ class Settings(BaseSettings):
     enable_vector_search: bool = True
     enable_observability: bool = False
 
-    @field_validator("allowed_origins", mode="before")
-    @classmethod
-    def parse_cors_origins(cls, v: str | list[str]) -> list[str]:
-        """Parse CORS origins from string or list."""
-        if isinstance(v, str):
-            return [origin.strip() for origin in v.split(",")]
-        return v
+    @property
+    def allowed_origins_list(self) -> list[str]:
+        """Get CORS origins as list."""
+        if not self.allowed_origins or self.allowed_origins.strip() == "":
+            return ["http://localhost:3000"]
+        return [origin.strip() for origin in self.allowed_origins.split(",") if origin.strip()]
 
     @property
     def is_production(self) -> bool:
