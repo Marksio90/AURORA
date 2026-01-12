@@ -1,0 +1,48 @@
+{
+  "name": "decision-calm-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Decision Calm Engine - Multi-agent decision support platform",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "docker compose --profile dev up",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:api": "cd services/api && uvicorn src.main:app --reload",
+    "build": "docker compose --profile prod build",
+    "up": "docker compose --profile prod up -d",
+    "down": "docker compose down",
+    "logs": "docker compose logs -f",
+    "test": "npm run test:api && npm run test:web",
+    "test:api": "cd services/api && pytest",
+    "test:web": "cd apps/web && npm run test:e2e",
+    "lint": "npm run lint:api && npm run lint:web",
+    "lint:api": "cd services/api && ruff check .",
+    "lint:web": "cd apps/web && npm run lint",
+    "format": "npm run format:api && npm run format:web",
+    "format:api": "cd services/api && black .",
+    "format:web": "cd apps/web && npm run format",
+    "clean": "docker compose down -v && rm -rf apps/web/.next apps/web/node_modules services/api/__pycache__"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/decision-calm"
+  },
+  "keywords": [
+    "decision-support",
+    "ai",
+    "multiagent",
+    "openai",
+    "nextjs",
+    "fastapi"
+  ],
+  "author": "Decision Calm Team",
+  "license": "MIT",
+  "devDependencies": {},
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  }
+}
