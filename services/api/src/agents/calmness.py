@@ -18,35 +18,37 @@ class CalmnessAgent(Agent):
 
     def get_system_prompt(self) -> str:
         """Get system prompt for calmness agent."""
-        return """You are a Calmness Agent for a decision support system.
+        return """Jesteś Agentem Uspokajającym w systemie wsparcia decyzyjnego.
 
-Your role is to assess emotional state and suggest ONE appropriate calming action.
+Twoja rola polega na ocenie stanu emocjonalnego i zasugerowaniu JEDNEJ odpowiedniej akcji uspokajającej.
 
-Based on stress level (1-10) and emotional indicators:
-- High stress (7-10): Suggest immediate grounding or breathing
-- Medium stress (4-6): Suggest short break or light movement
-- Low stress (1-3): Suggest brief reflection or journaling
+WAŻNE: Odpowiadaj WYŁĄCZNIE po polsku. Cała komunikacja z użytkownikiem musi być w języku polskim.
 
-Types of calm steps:
-- breathing: Breathing exercises (1-5 min)
-- break: Taking a short break (5-15 min)
-- journaling: Writing thoughts/concerns (5-10 min)
-- movement: Light physical activity (5-10 min)
-- grounding: Grounding exercises (2-5 min)
+Na podstawie poziomu stresu (1-10) i wskaźników emocjonalnych:
+- Wysoki stres (7-10): Zasugeruj natychmiastowe uziemienie lub oddychanie
+- Średni stres (4-6): Zasugeruj krótką przerwę lub lekki ruch
+- Niski stres (1-3): Zasugeruj krótką refleksję lub journaling
 
-Return JSON:
+Typy kroków uspokajających:
+- breathing: Ćwiczenia oddechowe (1-5 min)
+- break: Krótka przerwa (5-15 min)
+- journaling: Zapisywanie myśli/obaw (5-10 min)
+- movement: Lekka aktywność fizyczna (5-10 min)
+- grounding: Ćwiczenia uziemiające (2-5 min)
+
+Zwróć JSON:
 {
   "calm_step": {
     "type": "breathing|break|journaling|movement|grounding",
-    "title": "Clear, short title (max 100 chars)",
-    "description": "Specific instructions (max 500 chars)",
+    "title": "Jasny, krótki tytuł (max 100 znaków)",
+    "description": "Konkretne instrukcje (max 500 znaków)",
     "duration_minutes": 1-30
   },
-  "stress_assessment": "Brief assessment of emotional state",
-  "reasoning": "Why this calm step is appropriate"
+  "stress_assessment": "Krótka ocena stanu emocjonalnego",
+  "reasoning": "Dlaczego ten krok uspokajający jest odpowiedni"
 }
 
-Be compassionate but not patronizing. Focus on immediate, practical actions."""
+Bądź pełen współczucia, ale nie protekcjonalny. Skup się na natychmiastowych, praktycznych działaniach."""
 
     async def process(self, agent_input: AgentInput) -> AgentOutput:
         """Process and suggest calming action.
@@ -58,7 +60,7 @@ Be compassionate but not patronizing. Focus on immediate, practical actions."""
             Calm step suggestion
         """
         stress_level = agent_input.context.get("stress_level", 5)
-        logger.info("calmness_processing", stress_level=stress_level)
+        logger.info("przetwarzanie_uspokojenia", poziom_stresu=stress_level)
 
         prompt = self._format_input(agent_input)
         response = await self._call_llm(prompt, temperature=0.7)
@@ -70,18 +72,18 @@ Be compassionate but not patronizing. Focus on immediate, practical actions."""
             # Validate and create CalmStep
             calm_step = CalmStep(
                 type=CalmStepType(calm_step_dict.get("type", "breathing")),
-                title=calm_step_dict.get("title", "Take a deep breath"),
+                title=calm_step_dict.get("title", "Weź głęboki oddech"),
                 description=calm_step_dict.get(
                     "description",
-                    "Breathe in for 4 counts, hold for 4, out for 4."
+                    "Wdech na 4 oddechy, wstrzymaj na 4, wydech na 4."
                 ),
                 duration_minutes=calm_step_dict.get("duration_minutes", 3),
             )
 
             logger.info(
-                "calmness_success",
-                calm_type=calm_step.type,
-                duration=calm_step.duration_minutes,
+                "uspokojenie_sukces",
+                typ_uspokojenia=calm_step.type,
+                czas_trwania=calm_step.duration_minutes,
             )
 
             metadata = {
@@ -91,7 +93,7 @@ Be compassionate but not patronizing. Focus on immediate, practical actions."""
             }
 
         except (json.JSONDecodeError, ValueError) as e:
-            logger.warning("calmness_parse_failed", error=str(e))
+            logger.warning("uspokojenie_blad_parsowania", blad=str(e))
             # Fallback calm step based on stress level
             calm_step = self._get_fallback_calm_step(stress_level)
             metadata = {"calm_step": calm_step.model_dump()}
@@ -115,21 +117,21 @@ Be compassionate but not patronizing. Focus on immediate, practical actions."""
         if stress_level >= 7:
             return CalmStep(
                 type=CalmStepType.BREATHING,
-                title="Box Breathing",
-                description="Breathe in for 4 counts, hold for 4, exhale for 4, hold for 4. Repeat 3 times.",
+                title="Oddychanie kwadratowe",
+                description="Wdech na 4 oddechy, wstrzymaj na 4, wydech na 4, wstrzymaj na 4. Powtórz 3 razy.",
                 duration_minutes=3,
             )
         elif stress_level >= 4:
             return CalmStep(
                 type=CalmStepType.BREAK,
-                title="Short Break",
-                description="Step away from the decision for 10 minutes. Walk, stretch, or look outside.",
+                title="Krótka przerwa",
+                description="Odejdź od decyzji na 10 minut. Przejdź się, rozciągnij lub popatrz przez okno.",
                 duration_minutes=10,
             )
         else:
             return CalmStep(
                 type=CalmStepType.JOURNALING,
-                title="Quick Reflection",
-                description="Write down your main concerns about this decision in 2-3 sentences.",
+                title="Szybka refleksja",
+                description="Zapisz swoje główne obawy dotyczące tej decyzji w 2-3 zdaniach.",
                 duration_minutes=5,
             )

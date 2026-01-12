@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 
 class CalmStepType(str, Enum):
-    """Types of calming actions."""
+    """Typy kroków uspokajających."""
 
     BREATHING = "breathing"
     BREAK = "break"
@@ -17,40 +17,40 @@ class CalmStepType(str, Enum):
 
 
 class CalmStep(BaseModel):
-    """A single calming action suggestion."""
+    """Sugestia pojedynczego kroku uspokajającego."""
 
     type: CalmStepType
-    title: str = Field(..., min_length=1, max_length=100)
-    description: str = Field(..., min_length=1, max_length=500)
-    duration_minutes: int = Field(..., ge=1, le=30)
+    title: str = Field(..., min_length=1, max_length=100, description="Tytuł kroku uspokajającego")
+    description: str = Field(..., min_length=1, max_length=500, description="Opis kroku uspokajającego")
+    duration_minutes: int = Field(..., ge=1, le=30, description="Czas trwania w minutach")
 
 
 class DecisionOption(BaseModel):
-    """A decision option with consequences."""
+    """Opcja decyzyjna z konsekwencjami."""
 
-    title: str = Field(..., min_length=1, max_length=200)
-    description: str = Field(..., min_length=1, max_length=1000)
-    consequences: list[str] = Field(..., min_items=1, max_items=5)
+    title: str = Field(..., min_length=1, max_length=200, description="Tytuł opcji decyzyjnej")
+    description: str = Field(..., min_length=1, max_length=1000, description="Opis opcji decyzyjnej")
+    consequences: list[str] = Field(..., min_items=1, max_items=5, description="Lista konsekwencji tej opcji")
     emotional_risk: str = Field(
-        ..., description="Low/Medium/High emotional risk assessment"
+        ..., description="Ocena ryzyka emocjonalnego: Niskie/Średnie/Wysokie"
     )
     confidence_level: float = Field(
-        ..., ge=0.0, le=1.0, description="Agent's confidence in this option"
+        ..., ge=0.0, le=1.0, description="Pewność agenta co do tej opcji"
     )
 
 
 class AgentInput(BaseModel):
-    """Generic input for any agent."""
+    """Ogólny input dla dowolnego agenta."""
 
-    content: str
-    context: dict[str, Any] = Field(default_factory=dict)
-    agent_name: str
+    content: str = Field(..., description="Treść wejściowa dla agenta")
+    context: dict[str, Any] = Field(default_factory=dict, description="Kontekst dodatkowy")
+    agent_name: str = Field(..., description="Nazwa agenta")
 
 
 class AgentOutput(BaseModel):
-    """Generic output from any agent."""
+    """Ogólny output z dowolnego agenta."""
 
-    content: str
-    metadata: dict[str, Any] = Field(default_factory=dict)
-    agent_name: str
-    confidence: float = Field(default=1.0, ge=0.0, le=1.0)
+    content: str = Field(..., description="Treść wyjściowa z agenta")
+    metadata: dict[str, Any] = Field(default_factory=dict, description="Metadane dodatkowe")
+    agent_name: str = Field(..., description="Nazwa agenta")
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0, description="Pewność wyniku")

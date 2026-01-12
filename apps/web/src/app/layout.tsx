@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin', 'latin-ext'] });
 
 export const metadata: Metadata = {
-  title: 'Decision Calm Engine',
-  description: 'Make calmer, better decisions in 60 seconds',
+  title: 'Spokojne Decyzje - Asystent Podejmowania Decyzji',
+  description: 'Podejmuj spokojniejsze i lepsze decyzje w 60 sekund dzięki AI',
 };
 
 export default function RootLayout({
@@ -15,26 +15,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="pl">
       <body className={inter.className}>
         <nav className="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <a href="/" className="text-2xl font-bold text-calm-700">
-                🧘 Decision Calm
+                🧘 Spokojne Decyzje
               </a>
               <div className="flex gap-4">
                 <a
                   href="/"
                   className="text-gray-600 hover:text-calm-700 transition-colors"
                 >
-                  New Session
+                  Nowa sesja
                 </a>
                 <a
                   href="/history"
                   className="text-gray-600 hover:text-calm-700 transition-colors"
                 >
-                  History
+                  Historia
                 </a>
               </div>
             </div>
@@ -49,10 +49,10 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="text-center text-sm text-gray-600">
               <p className="mb-2">
-                Decision Calm Engine is NOT medical advice, therapy, or crisis intervention.
+                Spokojne Decyzje NIE JEST poradą medyczną, terapią ani interwencją kryzysową.
               </p>
               <p>
-                For emergencies: <strong>US 988</strong> | <strong>EU 116 123</strong>
+                W nagłych wypadkach: <strong>Polska 116 123</strong> | <strong>Telefon Zaufania dla Dzieci i Młodzieży 116 111</strong>
               </p>
             </div>
           </div>

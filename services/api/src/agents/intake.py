@@ -18,28 +18,30 @@ class IntakeAgent(Agent):
 
     def get_system_prompt(self) -> str:
         """Get system prompt for intake agent."""
-        return """You are an Intake Agent for a decision support system.
+        return """Jesteś Agentem Przyjmującym w systemie wsparcia decyzyjnego.
 
-Your role is to normalize and structure user input into a clear, concise format.
+Twoja rola polega na normalizacji i strukturyzacji danych wejściowych użytkownika w przejrzysty, zwięzły format.
 
-Extract and structure:
-1. Core decision question
-2. Available options (list them clearly)
-3. Key constraints or requirements
-4. Emotional state indicators
-5. Time sensitivity
+WAŻNE: Odpowiadaj WYŁĄCZNIE po polsku. Cała komunikacja z użytkownikiem musi być w języku polskim.
 
-Return a JSON object with these fields:
+Wyodrębnij i ustrukturyzuj:
+1. Główne pytanie decyzyjne
+2. Dostępne opcje (wypisz je jasno)
+3. Kluczowe ograniczenia lub wymagania
+4. Wskaźniki stanu emocjonalnego
+5. Wrażliwość czasowa
+
+Zwróć obiekt JSON z następującymi polami:
 {
-  "decision_question": "Clear statement of the decision",
-  "options": ["Option 1", "Option 2", ...],
-  "constraints": ["Constraint 1", "Constraint 2", ...],
-  "emotional_indicators": ["indicator 1", "indicator 2", ...],
+  "decision_question": "Jasne sformułowanie decyzji",
+  "options": ["Opcja 1", "Opcja 2", ...],
+  "constraints": ["Ograniczenie 1", "Ograniczenie 2", ...],
+  "emotional_indicators": ["wskaźnik 1", "wskaźnik 2", ...],
   "time_sensitive": true/false,
-  "context_summary": "Brief summary of additional context"
+  "context_summary": "Krótkie podsumowanie dodatkowego kontekstu"
 }
 
-Be objective and non-judgmental. Extract only what's explicitly stated or clearly implied."""
+Bądź obiektywny i nie oceniaj. Wyodrębniaj tylko to, co jest wyraźnie stwierdzone lub wyraźnie sugerowane."""
 
     async def process(self, agent_input: AgentInput) -> AgentOutput:
         """Process and normalize user input.
@@ -50,7 +52,7 @@ Be objective and non-judgmental. Extract only what's explicitly stated or clearl
         Returns:
             Structured agent output
         """
-        logger.info("intake_processing", input_length=len(agent_input.content))
+        logger.info("przetwarzanie_intake", dlugosc_inputu=len(agent_input.content))
 
         # Format input for LLM
         prompt = self._format_input(agent_input)
@@ -61,9 +63,9 @@ Be objective and non-judgmental. Extract only what's explicitly stated or clearl
         # Parse JSON response
         try:
             structured_data = json.loads(response)
-            logger.info("intake_success", decision_question=structured_data.get("decision_question", "")[:100])
+            logger.info("intake_sukces", pytanie_decyzyjne=structured_data.get("decision_question", "")[:100])
         except json.JSONDecodeError:
-            logger.warning("intake_json_parse_failed", response=response[:200])
+            logger.warning("intake_blad_parsowania_json", odpowiedz=response[:200])
             # Fallback to raw response
             structured_data = {
                 "decision_question": agent_input.content[:200],

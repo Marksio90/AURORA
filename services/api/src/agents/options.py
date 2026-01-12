@@ -18,41 +18,43 @@ class OptionsAgent(Agent):
 
     def get_system_prompt(self) -> str:
         """Get system prompt for options agent."""
-        return """You are an Options Agent for a decision support system.
+        return """Jesteś Agentem Opcji w systemie wsparcia decyzyjnego.
 
-Your role is to generate 2-4 clear decision options with:
-1. Concrete consequences (positive and negative)
-2. Emotional risk assessment (Low/Medium/High)
-3. Realistic outcomes
+Twoja rola polega na wygenerowaniu 2-4 jasnych opcji decyzyjnych z:
+1. Konkretnymi konsekwencjami (pozytywnymi i negatywnymi)
+2. Oceną ryzyka emocjonalnego (Niskie/Średnie/Wysokie)
+3. Realistycznymi wynikami
 
-Guidelines:
-- Be objective and balanced
-- Include both obvious and non-obvious options
-- Consider "do nothing" or "wait" as valid options
-- Present consequences without judgment
-- Assess emotional toll honestly
-- Be concise but complete
+WAŻNE: Odpowiadaj WYŁĄCZNIE po polsku. Cała komunikacja z użytkownikiem musi być w języku polskim.
 
-Return JSON:
+Wytyczne:
+- Bądź obiektywny i zrównoważony
+- Uwzględnij zarówno opcje oczywiste, jak i nieoczywiste
+- Rozważ "nic nie robić" lub "czekać" jako ważne opcje
+- Przedstaw konsekwencje bez osądzania
+- Oceniaj obciążenie emocjonalne uczciwie
+- Bądź zwięzły, ale kompletny
+
+Zwróć JSON:
 {
   "options": [
     {
-      "title": "Clear option name (max 200 chars)",
-      "description": "What this option means (max 1000 chars)",
+      "title": "Jasna nazwa opcji (max 200 znaków)",
+      "description": "Co oznacza ta opcja (max 1000 znaków)",
       "consequences": [
-        "Consequence 1",
-        "Consequence 2",
-        "Consequence 3"
+        "Konsekwencja 1",
+        "Konsekwencja 2",
+        "Konsekwencja 3"
       ],
       "emotional_risk": "Low|Medium|High",
       "confidence_level": 0.0-1.0
     }
   ],
-  "considerations": "Key factors to consider across all options",
-  "control_question": "A reflective question to help user think deeper"
+  "considerations": "Kluczowe czynniki do rozważenia dla wszystkich opcji",
+  "control_question": "Pytanie refleksyjne, które pomoże użytkownikowi myśleć głębiej"
 }
 
-Present options neutrally. Never command or prescribe. The user chooses."""
+Przedstawiaj opcje neutralnie. Nigdy nie rozkazuj ani nie przepisuj. To użytkownik wybiera."""
 
     async def process(self, agent_input: AgentInput) -> AgentOutput:
         """Process and generate decision options.
@@ -63,7 +65,7 @@ Present options neutrally. Never command or prescribe. The user chooses."""
         Returns:
             Decision options with consequences
         """
-        logger.info("options_processing")
+        logger.info("przetwarzanie_opcji")
 
         prompt = self._format_input(agent_input)
         response = await self._call_llm(prompt, temperature=0.7, max_tokens=1500)
@@ -77,7 +79,7 @@ Present options neutrally. Never command or prescribe. The user chooses."""
             for opt_dict in options_list[:4]:  # Max 4 options
                 try:
                     decision_option = DecisionOption(
-                        title=opt_dict.get("title", "Unknown option"),
+                        title=opt_dict.get("title", "Nieznana opcja"),
                         description=opt_dict.get("description", ""),
                         consequences=opt_dict.get("consequences", [])[:5],  # Max 5
                         emotional_risk=opt_dict.get("emotional_risk", "Medium"),
@@ -85,27 +87,27 @@ Present options neutrally. Never command or prescribe. The user chooses."""
                     )
                     decision_options.append(decision_option)
                 except ValueError as e:
-                    logger.warning("options_validation_failed", error=str(e))
+                    logger.warning("opcje_walidacja_niepowodzenie", blad=str(e))
                     continue
 
             # Ensure at least 2 options
             if len(decision_options) < 2:
-                logger.warning("options_insufficient", count=len(decision_options))
+                logger.warning("opcje_niewystarczajace", liczba=len(decision_options))
                 decision_options = self._get_fallback_options(agent_input)
 
-            logger.info("options_success", option_count=len(decision_options))
+            logger.info("opcje_sukces", liczba_opcji=len(decision_options))
 
             metadata = {
                 "options": [opt.model_dump() for opt in decision_options],
                 "considerations": options_data.get("considerations", ""),
                 "control_question": options_data.get(
                     "control_question",
-                    "What matters most to you in this decision?"
+                    "Co jest dla Ciebie najważniejsze w tej decyzji?"
                 ),
             }
 
         except (json.JSONDecodeError, ValueError) as e:
-            logger.error("options_parse_failed", error=str(e))
+            logger.error("opcje_blad_parsowania", blad=str(e))
             decision_options = self._get_fallback_options(agent_input)
             metadata = {"options": [opt.model_dump() for opt in decision_options]}
 
@@ -127,16 +129,16 @@ Present options neutrally. Never command or prescribe. The user chooses."""
         """
         return [
             DecisionOption(
-                title="Move forward with current plan",
-                description="Proceed with the decision as you've described it",
-                consequences=["Action will be taken", "Situation will change"],
+                title="Postąp zgodnie z obecnym planem",
+                description="Kontynuuj decyzję tak, jak ją opisałeś",
+                consequences=["Działanie zostanie podjęte", "Sytuacja się zmieni"],
                 emotional_risk="Medium",
                 confidence_level=0.5,
             ),
             DecisionOption(
-                title="Wait and gather more information",
-                description="Take time to research and reflect before deciding",
-                consequences=["Delayed decision", "More clarity", "Possible missed opportunity"],
+                title="Poczekaj i zbierz więcej informacji",
+                description="Poświęć czas na badanie i refleksję przed podjęciem decyzji",
+                consequences=["Opóźniona decyzja", "Większa jasność", "Możliwa stracona szansa"],
                 emotional_risk="Low",
                 confidence_level=0.6,
             ),

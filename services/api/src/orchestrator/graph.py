@@ -36,7 +36,7 @@ class DecisionOrchestrator:
         self.options_agent = OptionsAgent(openai_client)
         self.safety_agent = SafetyAgent(openai_client)
 
-        logger.info("orchestrator_initialized")
+        logger.info("orchestrator_zainicjalizowany")
 
     async def process_decision(
         self,

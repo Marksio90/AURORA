@@ -48,11 +48,11 @@ class AppException(Exception):
 
 
 class DatabaseException(AppException):
-    """Database operation failed."""
+    """Operacja na bazie danych nie powiodła się."""
 
     def __init__(self, detail: str, **kwargs: Any) -> None:
         super().__init__(
-            title="Database Error",
+            title="Błąd bazy danych",
             detail=detail,
             status=500,
             type_uri="https://decisioncalm.ai/errors/database",
@@ -61,11 +61,11 @@ class DatabaseException(AppException):
 
 
 class OpenAIException(AppException):
-    """OpenAI API call failed."""
+    """Wywołanie API OpenAI nie powiodło się."""
 
     def __init__(self, detail: str, **kwargs: Any) -> None:
         super().__init__(
-            title="AI Service Error",
+            title="Błąd usługi AI",
             detail=detail,
             status=503,
             type_uri="https://decisioncalm.ai/errors/ai-service",
@@ -74,11 +74,11 @@ class OpenAIException(AppException):
 
 
 class ContentSafetyException(AppException):
-    """Content failed safety validation."""
+    """Treść nie przeszła walidacji bezpieczeństwa."""
 
     def __init__(self, detail: str, blocked_reason: str, **kwargs: Any) -> None:
         super().__init__(
-            title="Content Safety Violation",
+            title="Naruszenie bezpieczeństwa treści",
             detail=detail,
             status=400,
             type_uri="https://decisioncalm.ai/errors/content-safety",
@@ -88,11 +88,11 @@ class ContentSafetyException(AppException):
 
 
 class ValidationException(AppException):
-    """Input validation failed."""
+    """Walidacja danych wejściowych nie powiodła się."""
 
     def __init__(self, detail: str, field: str | None = None, **kwargs: Any) -> None:
         super().__init__(
-            title="Validation Error",
+            title="Błąd walidacji",
             detail=detail,
             status=422,
             type_uri="https://decisioncalm.ai/errors/validation",
@@ -102,11 +102,11 @@ class ValidationException(AppException):
 
 
 class NotFoundException(AppException):
-    """Resource not found."""
+    """Zasób nie został znaleziony."""
 
     def __init__(self, detail: str, resource_type: str, **kwargs: Any) -> None:
         super().__init__(
-            title="Resource Not Found",
+            title="Zasób nie znaleziony",
             detail=detail,
             status=404,
             type_uri="https://decisioncalm.ai/errors/not-found",

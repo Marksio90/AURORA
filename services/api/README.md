@@ -1,176 +1,176 @@
-# Decision Calm API
+# Spokojne Decyzje API
 
-FastAPI backend for Decision Calm Engine - Multi-agent decision support system.
+Backend FastAPI dla Spokojnych Decyzji - System wsparcia decyzji wieloagentowy.
 
-## 🏗️ Architecture
+## 🏗️ Architektura
 
 ```
 src/
-├── agents/           # 5 specialized agents (Intake, Context, Calmness, Options, Safety)
-├── orchestrator/     # Multi-agent orchestration with state management
-├── api/              # FastAPI routes and middleware
-├── db/               # SQLAlchemy models, pgvector integration
-├── core/             # Config, logging, error handling
-├── schemas/          # Pydantic v2 schemas
-└── services/         # OpenAI client, business logic
+├── agents/           # 5 wyspecjalizowanych agentów (Intake, Context, Calmness, Options, Safety)
+├── orchestrator/     # Orkiestracja wieloagentowa z zarządzaniem stanem
+├── api/              # Trasy FastAPI i middleware
+├── db/               # Modele SQLAlchemy, integracja pgvector
+├── core/             # Config, logowanie, obsługa błędów
+├── schemas/          # Schematy Pydantic v2
+└── services/         # Klient OpenAI, logika biznesowa
 ```
 
-## 🚀 Quick Start
+## 🚀 Szybki Start
 
-### Local Development (without Docker)
+### Rozwój Lokalny (bez Docker)
 
 ```bash
-# Install dependencies
+# Instalacja zależności
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
 
-# Set environment variables
+# Ustawienie zmiennych środowiskowych
 export DATABASE_URL="postgresql://user:pass@localhost:5432/decisioncalm"
 export OPENAI_API_KEY="sk-..."
 
-# Run migrations
+# Uruchomienie migracji
 alembic upgrade head
 
-# Start server
+# Uruchomienie serwera
 uvicorn src.main:app --reload
 ```
 
-### Docker Development
+### Rozwój Docker
 
 ```bash
-cd ../../  # Go to repo root
+cd ../../  # Przejdź do katalogu głównego repozytorium
 docker compose --profile dev up --build
 ```
 
-API available at: http://localhost:8000
+API dostępne pod: http://localhost:8000
 
-## 📊 API Endpoints
+## 📊 Endpointy API
 
-### Health
+### Zdrowie
 
-- `GET /v1/health` - Health check
-- `GET /v1/health/ready` - Readiness probe
+- `GET /v1/health` - Sprawdzenie stanu zdrowia
+- `GET /v1/health/ready` - Sonda gotowości
 
-### Decisions
+### Decyzje
 
-- `POST /v1/decision/sessions` - Create decision session
-- `GET /v1/decision/sessions/{id}` - Get session by ID
-- `GET /v1/decision/sessions` - List sessions (paginated)
+- `POST /v1/decision/sessions` - Utwórz sesję decyzyjną
+- `GET /v1/decision/sessions/{id}` - Pobierz sesję po ID
+- `GET /v1/decision/sessions` - Lista sesji (paginowana)
 
-Full API docs: http://localhost:8000/docs
+Pełna dokumentacja API: http://localhost:8000/docs
 
-## 🧪 Testing
+## 🧪 Testowanie
 
 ```bash
-# Run all tests
+# Uruchomienie wszystkich testów
 pytest
 
-# Run with coverage
+# Uruchomienie z pokryciem
 pytest --cov=src --cov-report=html
 
-# Run specific test file
+# Uruchomienie konkretnego pliku testów
 pytest tests/unit/test_agents.py
 
-# Run integration tests only
+# Uruchomienie tylko testów integracyjnych
 pytest tests/integration/
 ```
 
-## 🔧 Code Quality
+## 🔧 Jakość Kodu
 
 ```bash
-# Format code
+# Formatowanie kodu
 black .
 
-# Lint
+# Linting
 ruff check .
 
-# Type check
+# Sprawdzanie typów
 mypy src/
 
-# Run all checks
+# Uruchomienie wszystkich sprawdzeń
 black . && ruff check . && mypy src/ && pytest
 ```
 
-## 🔄 Database Migrations
+## 🔄 Migracje Bazy Danych
 
 ```bash
-# Create new migration
-alembic revision --autogenerate -m "description"
+# Utworzenie nowej migracji
+alembic revision --autogenerate -m "opis"
 
-# Apply migrations
+# Zastosowanie migracji
 alembic upgrade head
 
-# Rollback
+# Cofnięcie
 alembic downgrade -1
 ```
 
-## 🧠 Multi-Agent System
+## 🧠 System Wieloagentowy
 
-### Agent Flow
+### Przepływ Agentów
 
 ```
-User Input
+Dane Wejściowe Użytkownika
     ↓
-[Intake Agent] → Normalize & structure input
+[Agent Przyjmujący] → Normalizacja i strukturyzacja danych wejściowych
     ↓
-[Context Agent] → Check if clarification needed (0-2 questions)
+[Agent Kontekstowy] → Sprawdzenie czy potrzebne wyjaśnienie (0-2 pytania)
     ↓
-[Calmness Agent] → Generate calm step based on stress level
+[Agent Spokoju] → Generowanie kroku uspokajającego na podstawie poziomu stresu
     ↓
-[Options Agent] → Generate 2-4 decision options + consequences
+[Agent Opcji] → Generowanie 2-4 opcji decyzji + konsekwencje
     ↓
-[Safety Agent] → Validate content safety & tone
+[Agent Bezpieczeństwa] → Walidacja bezpieczeństwa treści i tonu
     ↓
-Decision Brief (returned to user)
+Brief Decyzyjny (zwrócony użytkownikowi)
 ```
 
-### Agent Responsibilities
+### Odpowiedzialności Agentów
 
-- **Intake**: Parses user input into structured format
-- **Context**: Asks minimal clarifying questions (MVP: skips in most cases)
-- **Calmness**: Suggests calming actions based on stress (1-10 scale)
-- **Options**: Generates 2-4 options with consequences and emotional risk
-- **Safety**: Blocks harmful content, ensures non-authoritarian tone
+- **Przyjmujący**: Parsuje dane wejściowe użytkownika do ustrukturyzowanego formatu
+- **Kontekstowy**: Zadaje minimalne pytania wyjaśniające (MVP: pomija w większości przypadków)
+- **Spokoju**: Sugeruje działania uspokajające na podstawie stresu (skala 1-10)
+- **Opcji**: Generuje 2-4 opcje z konsekwencjami i ryzykiem emocjonalnym
+- **Bezpieczeństwa**: Blokuje szkodliwe treści, zapewnia nieautorytarny ton
 
-## 🛡️ Safety Features
+## 🛡️ Funkcje Bezpieczeństwa
 
-- **Content Safety**: Blocks self-harm, violence, medical diagnoses
-- **Tone Validation**: Removes authoritarian language ("you must", "you should")
-- **Disclaimers**: Always includes safety disclaimers
-- **Crisis Detection**: Redirects to crisis resources when needed
+- **Bezpieczeństwo Treści**: Blokuje samookaleczenie, przemoc, diagnozy medyczne
+- **Walidacja Tonu**: Usuwa język autorytarny ("musisz", "powinieneś")
+- **Zastrzeżenia**: Zawsze zawiera zastrzeżenia bezpieczeństwa
+- **Wykrywanie Kryzysu**: Przekierowuje do zasobów kryzysowych gdy potrzeba
 
-## 📈 Observability
+## 📈 Obserwowalność
 
-Structured JSON logging with:
-- Request/response timing
-- Agent execution traces
-- Error tracking
-- Performance metrics
+Strukturalne logowanie JSON z:
+- Czasem żądania/odpowiedzi
+- Śladami wykonania agentów
+- Śledzeniem błędów
+- Metrykami wydajności
 
-Log level controlled via `LOG_LEVEL` env var.
+Poziom logowania kontrolowany przez zmienną środowiskową `LOG_LEVEL`.
 
-## 🔐 Security
+## 🔐 Bezpieczeństwo
 
-- Pydantic validation on all inputs
-- SQL injection protection (SQLAlchemy)
-- CORS configuration
-- Rate limiting (optional, via Redis)
-- Problem+JSON error responses (RFC 7807)
+- Walidacja Pydantic na wszystkich danych wejściowych
+- Ochrona przed SQL injection (SQLAlchemy)
+- Konfiguracja CORS
+- Ograniczenie szybkości (opcjonalne, przez Redis)
+- Odpowiedzi błędów Problem+JSON (RFC 7807)
 
-## 🌐 Environment Variables
+## 🌐 Zmienne Środowiskowe
 
-See `.env.example` at repo root for all configuration options.
+Zobacz `.env.example` w katalogu głównym repozytorium dla wszystkich opcji konfiguracji.
 
-Required:
-- `DATABASE_URL` - PostgreSQL connection string
-- `OPENAI_API_KEY` - OpenAI API key
+Wymagane:
+- `DATABASE_URL` - String połączenia PostgreSQL
+- `OPENAI_API_KEY` - Klucz API OpenAI
 
-Optional:
-- `REDIS_ENABLED` - Enable Redis for caching
-- `LOG_LEVEL` - Logging level (DEBUG, INFO, WARNING, ERROR)
-- `ENABLE_VECTOR_SEARCH` - Enable pgvector similarity search
+Opcjonalne:
+- `REDIS_ENABLED` - Włącz Redis dla cache'owania
+- `LOG_LEVEL` - Poziom logowania (DEBUG, INFO, WARNING, ERROR)
+- `ENABLE_VECTOR_SEARCH` - Włącz wyszukiwanie podobieństwa pgvector
 
-## 📝 Development Notes
+## 📝 Notatki Deweloperskie
 
 - Python 3.11+
 - FastAPI 0.109+
@@ -179,14 +179,14 @@ Optional:
 - PostgreSQL 16 + pgvector
 - OpenAI API (gpt-4o-mini)
 
-## 🤝 Contributing
+## 🤝 Współpraca
 
-1. Create feature branch
-2. Make changes
-3. Run tests and linting
-4. Submit PR
+1. Utwórz branch z funkcją
+2. Wprowadź zmiany
+3. Uruchom testy i linting
+4. Prześlij PR
 
-All PRs must:
-- Pass CI (lint + tests)
-- Maintain >80% code coverage
-- Follow existing code style
+Wszystkie PR muszą:
+- Przejść CI (lint + testy)
+- Utrzymać >80% pokrycia kodu
+- Postępować zgodnie z istniejącym stylem kodu

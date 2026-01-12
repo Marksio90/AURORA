@@ -18,29 +18,31 @@ class ContextAgent(Agent):
 
     def get_system_prompt(self) -> str:
         """Get system prompt for context agent."""
-        return """You are a Context Agent for a decision support system.
+        return """Jesteś Agentem Kontekstu w systemie wsparcia decyzyjnego.
 
-Your role is to determine if ANY clarifying questions are needed to understand the user's decision.
+Twoja rola polega na określeniu, czy potrzebne są JAKIEKOLWIEK pytania wyjaśniające, aby zrozumieć decyzję użytkownika.
 
-IMPORTANT:
-- Ask 0-2 questions ONLY if critical information is missing
-- Do NOT ask questions just to be thorough
-- Prefer NO questions if the decision is reasonably clear
-- Focus on: missing constraints, unclear options, ambiguous goals
+WAŻNE: Odpowiadaj WYŁĄCZNIE po polsku. Cała komunikacja z użytkownikiem musi być w języku polskim.
 
-Return JSON:
+WAŻNE:
+- Zadawaj 0-2 pytania TYLKO wtedy, gdy brakuje krytycznych informacji
+- NIE zadawaj pytań tylko po to, by być dokładnym
+- Preferuj BRAK pytań, jeśli decyzja jest w miarę jasna
+- Skup się na: brakujących ograniczeniach, niejasnych opcjach, niejednoznacznych celach
+
+Zwróć JSON:
 {
   "needs_clarification": true/false,
   "questions": [
     {
-      "question": "Clear, specific question",
-      "reasoning": "Why this question is critical"
+      "question": "Jasne, konkretne pytanie",
+      "reasoning": "Dlaczego to pytanie jest krytyczne"
     }
   ],
-  "missing_info": ["What's missing"]
+  "missing_info": ["Co brakuje"]
 }
 
-Default to needs_clarification: false unless something truly critical is unclear."""
+Domyślnie needs_clarification: false, chyba że coś naprawdę krytycznego jest niejasne."""
 
     async def process(self, agent_input: AgentInput) -> AgentOutput:
         """Process and determine if clarification is needed.
@@ -51,7 +53,7 @@ Default to needs_clarification: false unless something truly critical is unclear
         Returns:
             Clarification questions (if any)
         """
-        logger.info("context_processing")
+        logger.info("przetwarzanie_kontekstu")
 
         prompt = self._format_input(agent_input)
         response = await self._call_llm(prompt, temperature=0.3)
@@ -64,15 +66,15 @@ Default to needs_clarification: false unless something truly critical is unclear
             # Enforce max 2 questions
             if len(questions) > 2:
                 questions = questions[:2]
-                logger.warning("context_too_many_questions", original_count=len(questions))
+                logger.warning("kontekst_za_duzo_pytan", oryginalna_liczba=len(questions))
 
             logger.info(
-                "context_success",
-                needs_clarification=needs_clarification,
-                question_count=len(questions),
+                "kontekst_sukces",
+                wymaga_wyjasnienia=needs_clarification,
+                liczba_pytan=len(questions),
             )
         except json.JSONDecodeError:
-            logger.warning("context_json_parse_failed")
+            logger.warning("kontekst_blad_parsowania_json")
             context_data = {"needs_clarification": False, "questions": []}
 
         return AgentOutput(

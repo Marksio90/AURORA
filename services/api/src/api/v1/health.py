@@ -7,41 +7,41 @@ router = APIRouter()
 
 
 class HealthResponse(BaseModel):
-    """Health check response."""
+    """Odpowiedź sprawdzenia stanu zdrowia."""
 
-    status: str
-    version: str = "0.1.0"
-    service: str = "decision-calm-api"
+    status: str = Field(..., description="Status serwisu")
+    version: str = Field(default="0.1.0", description="Wersja API")
+    service: str = Field(default="decision-calm-api", description="Nazwa serwisu")
 
 
 class ReadyResponse(BaseModel):
-    """Readiness check response."""
+    """Odpowiedź sprawdzenia gotowości."""
 
-    ready: bool
-    database: str
-    ai_service: str
+    ready: bool = Field(..., description="Czy serwis jest gotowy")
+    database: str = Field(..., description="Status bazy danych")
+    ai_service: str = Field(..., description="Status usługi AI")
 
 
 @router.get("/health", response_model=HealthResponse, status_code=status.HTTP_200_OK)
 async def health_check() -> HealthResponse:
-    """Basic health check endpoint.
+    """Podstawowy endpoint sprawdzenia stanu zdrowia.
 
     Returns:
-        Health status
+        Status zdrowia serwisu
     """
-    return HealthResponse(status="healthy")
+    return HealthResponse(status="zdrowy")
 
 
 @router.get("/health/ready", response_model=ReadyResponse)
 async def readiness_check() -> ReadyResponse:
-    """Readiness probe for container orchestration.
+    """Sonda gotowości dla orkiestracji kontenerów.
 
     Returns:
-        Readiness status with dependencies
+        Status gotowości z zależnościami
     """
-    # TODO: Add actual DB and OpenAI connectivity checks
+    # TODO: Dodać rzeczywiste sprawdzanie połączenia z DB i OpenAI
     return ReadyResponse(
         ready=True,
-        database="connected",
-        ai_service="connected",
+        database="połączona",
+        ai_service="połączona",
     )
