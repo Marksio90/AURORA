@@ -12,9 +12,9 @@ export default function HistoryList({ sessions }: HistoryListProps) {
   if (sessions.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">No decision sessions yet.</p>
+        <p className="text-gray-500 text-lg">Brak sesji decyzyjnych.</p>
         <Link href="/" className="text-calm-600 hover:text-calm-700 mt-4 inline-block">
-          Create your first decision session →
+          Utwórz swoją pierwszą sesję decyzyjną →
         </Link>
       </div>
     );
@@ -40,13 +40,13 @@ export default function HistoryList({ sessions }: HistoryListProps) {
             <span
               className={`badge ${getStressLevelColor(session.stress_level)} border`}
             >
-              Stress: {session.stress_level}/10
+              Stres: {session.stress_level}/10
             </span>
           </div>
 
           <div className="flex gap-2 text-sm text-gray-600">
             <span className="bg-gray-100 px-2 py-1 rounded">
-              {session.output.options.length} options
+              {session.output.options.length} {session.output.options.length === 1 ? 'opcja' : session.output.options.length >= 2 && session.output.options.length <= 4 ? 'opcje' : 'opcji'}
             </span>
             <span className="bg-calm-100 text-calm-700 px-2 py-1 rounded">
               {session.output.calm_step.type}

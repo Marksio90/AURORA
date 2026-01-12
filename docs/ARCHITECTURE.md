@@ -1,28 +1,28 @@
-# Decision Calm Engine - Architecture
+# Spokojne Decyzje - Architektura
 
-**Version:** 0.1.0 (MVP)
-**Last Updated:** 2024-01-12
+**Wersja:** 0.1.0 (MVP)
+**Ostatnia aktualizacja:** 2024-01-12
 
-## 🎯 Mission
+## 🎯 Misja
 
-Enable users to make **calmer, better decisions** in 60 seconds through a multi-agent AI system that:
-- Analyzes decision context without bias
-- Presents options with consequences, not commands
-- Suggests calming actions based on emotional state
-- Respects user autonomy completely
+Umożliwienie użytkownikom podejmowania **spokojniejszych, lepszych decyzji** w 60 sekund poprzez wieloagentowy system AI, który:
+- Analizuje kontekst decyzji bez uprzedzeń
+- Prezentuje opcje z konsekwencjami, nie polecenia
+- Sugeruje działania uspokajające na podstawie stanu emocjonalnego
+- W pełni szanuje autonomię użytkownika
 
-**This is NOT**: Medical advice, therapy, crisis intervention, or diagnosis.
+**To NIE JEST**: Porada medyczna, terapia, interwencja kryzysowa ani diagnoza.
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Architektura Systemu
 
-### High-Level Overview
+### Ogólny Przegląd
 
 ```
 ┌─────────────┐         ┌──────────────┐         ┌─────────────┐
-│   Browser   │────────▶│   Next.js    │────────▶│   FastAPI   │
-│   (User)    │◀────────│  Frontend    │◀────────│   Backend   │
+│  Przeglądarka│────────▶│   Next.js    │────────▶│   FastAPI   │
+│ (Użytkownik) │◀────────│  Frontend    │◀────────│   Backend   │
 └─────────────┘         └──────────────┘         └──────┬──────┘
                                                          │
                                                          │
@@ -35,80 +35,80 @@ Enable users to make **calmer, better decisions** in 60 seconds through a multi-
         └───────────────┘                                 └─────────────┘
 ```
 
-### Tech Stack
+### Stos Technologiczny
 
-| Layer          | Technology                     | Version  |
+| Warstwa        | Technologia                    | Wersja   |
 |----------------|--------------------------------|----------|
 | Frontend       | Next.js (App Router)           | 14.1     |
 | Backend        | FastAPI                        | 0.109+   |
-| Database       | PostgreSQL + pgvector          | 16       |
-| AI Provider    | OpenAI (GPT-4o-mini)           | Latest   |
-| Orchestration  | Custom (inspired by LangGraph) | -        |
-| Infrastructure | Docker Compose                 | 3.9      |
-| Language       | TypeScript (FE), Python (BE)   | TS5, Py3.11 |
+| Baza danych    | PostgreSQL + pgvector          | 16       |
+| Dostawca AI    | OpenAI (GPT-4o-mini)           | Najnowsza|
+| Orkiestracja   | Niestandardowa (inspirowana LangGraph) | -  |
+| Infrastruktura | Docker Compose                 | 3.9      |
+| Język          | TypeScript (FE), Python (BE)   | TS5, Py3.11 |
 
 ---
 
-## 📊 Multi-Agent System
+## 📊 System Wieloagentowy
 
-### Agent Graph
+### Graf Agentów
 
 ```
-User Input (3 Questions)
+Dane Wejściowe Użytkownika (3 Pytania)
         ↓
 ┌───────────────────────┐
-│   Intake Agent        │ → Normalize & structure input
+│ Agent Przyjmujący     │ → Normalizacja i strukturyzacja danych wejściowych
 └───────────┬───────────┘
             ↓
 ┌───────────────────────┐
-│   Context Agent       │ → Check if clarification needed (0-2 questions)
+│ Agent Kontekstowy     │ → Sprawdzenie czy potrzebne wyjaśnienie (0-2 pytania)
 └───────────┬───────────┘
             ↓
 ┌───────────────────────┐
-│   Calmness Agent      │ → Generate "Calm Step" based on stress (1-10)
+│ Agent Spokoju         │ → Generowanie "Kroku Uspokajającego" na podstawie stresu (1-10)
 └───────────┬───────────┘
             ↓
 ┌───────────────────────┐
-│   Options Agent       │ → Generate 2-4 options + consequences + risks
+│ Agent Opcji           │ → Generowanie 2-4 opcji + konsekwencje + ryzyka
 └───────────┬───────────┘
             ↓
 ┌───────────────────────┐
-│   Safety Agent        │ → Validate content, block harmful patterns
+│ Agent Bezpieczeństwa  │ → Walidacja treści, blokowanie szkodliwych wzorców
 └───────────┬───────────┘
             ↓
-    Decision Brief
+    Brief Decyzyjny
 ```
 
-### Agent Responsibilities
+### Odpowiedzialności Agentów
 
-| Agent            | Input                          | Output                                | Temperature |
-|------------------|--------------------------------|---------------------------------------|-------------|
-| **Intake**       | Raw user text                  | Structured JSON (decision, options)   | 0.3         |
-| **Context**      | Structured input               | 0-2 clarifying questions (if needed)  | 0.3         |
-| **Calmness**     | Context + stress level         | Calm step (breathing, break, etc.)    | 0.7         |
-| **Options**      | Context + constraints          | 2-4 options + consequences + risks    | 0.7         |
-| **Safety**       | All content                    | Safety validation + tone check        | 0.2         |
+| Agent              | Wejście                        | Wyjście                               | Temperature |
+|--------------------|--------------------------------|---------------------------------------|-------------|
+| **Przyjmujący**    | Surowy tekst użytkownika       | Strukturalny JSON (decyzja, opcje)    | 0.3         |
+| **Kontekstowy**    | Strukturalne dane wejściowe    | 0-2 pytania wyjaśniające (jeśli potrzeba) | 0.3     |
+| **Spokoju**        | Kontekst + poziom stresu       | Krok uspokajający (oddychanie, przerwa, etc.) | 0.7 |
+| **Opcji**          | Kontekst + ograniczenia        | 2-4 opcje + konsekwencje + ryzyka     | 0.7         |
+| **Bezpieczeństwa** | Cała treść                     | Walidacja bezpieczeństwa + sprawdzenie tonu | 0.2   |
 
-### Safety Rules
+### Zasady Bezpieczeństwa
 
-1. **Content Blocking**:
-   - Self-harm keywords → Block + redirect to crisis resources
-   - Medical diagnoses → Block with disclaimer
-   - Authoritarian commands → Remove/rewrite
+1. **Blokowanie Treści**:
+   - Słowa kluczowe samookaleczenia → Blokada + przekierowanie do zasobów kryzysowych
+   - Diagnozy medyczne → Blokada z zastrzeżeniem
+   - Autorytarne polecenia → Usunięcie/przepisanie
 
-2. **Tone Validation**:
-   - Reject: "you must", "you should", "do this now"
-   - Accept: "you could consider", "one option is", "you might"
+2. **Walidacja Tonu**:
+   - Odrzucaj: "musisz", "powinieneś", "zrób to teraz"
+   - Akceptuj: "możesz rozważyć", "jedną opcją jest", "mógłbyś"
 
-3. **Disclaimers**:
-   - Always present on every Decision Brief
-   - Crisis hotline numbers in footer
+3. **Zastrzeżenia**:
+   - Zawsze obecne w każdym Briefie Decyzyjnym
+   - Numery infolinii kryzysowych w stopce
 
 ---
 
-## 🗄️ Database Schema
+## 🗄️ Schemat Bazy Danych
 
-### `decision_sessions` Table
+### Tabela `decision_sessions`
 
 ```sql
 CREATE TABLE decision_sessions (
@@ -116,71 +116,71 @@ CREATE TABLE decision_sessions (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
-    -- User (anonymous tracking)
+    -- Użytkownik (anonimowe śledzenie)
     user_id VARCHAR(255),
 
-    -- Input
+    -- Dane wejściowe
     context TEXT NOT NULL,
     options TEXT NOT NULL,
     stress_level INTEGER NOT NULL CHECK (stress_level BETWEEN 1 AND 10),
 
-    -- Output
+    -- Wyjście
     decision_brief JSONB,
 
-    -- Metadata
+    -- Metadane
     processing_time_seconds FLOAT,
     tags JSONB DEFAULT '[]',
 
-    -- Vector search (1536 dimensions = text-embedding-3-small)
+    -- Wyszukiwanie wektorowe (1536 wymiarów = text-embedding-3-small)
     embedding vector(1536),
 
     INDEX idx_user_id (user_id),
     INDEX idx_created_at (created_at)
 );
 
--- Vector similarity index (IVFFlat for speed)
+-- Indeks podobieństwa wektorowego (IVFFlat dla szybkości)
 CREATE INDEX idx_embedding ON decision_sessions
 USING ivfflat (embedding vector_cosine_ops)
 WITH (lists = 100);
 ```
 
-### Vector Search
+### Wyszukiwanie Wektorowe
 
-**Purpose**: Find similar past decisions for personalization.
+**Cel**: Znajdowanie podobnych poprzednich decyzji dla personalizacji.
 
-**Flow**:
-1. Embed user's context + options → 1536-dim vector
-2. Store in `embedding` column
-3. On future sessions, retrieve top-3 similar past decisions
-4. Use as context for agents (optional enhancement)
+**Przepływ**:
+1. Osadzenie kontekstu + opcji użytkownika → wektor 1536-wymiarowy
+2. Przechowanie w kolumnie `embedding`
+3. W przyszłych sesjach, pobranie top-3 podobnych poprzednich decyzji
+4. Użycie jako kontekst dla agentów (opcjonalne ulepszenie)
 
-**Distance Metric**: Cosine similarity (via pgvector)
+**Metryka Odległości**: Podobieństwo kosinusowe (przez pgvector)
 
 ---
 
-## 🔄 Data Flow
+## 🔄 Przepływ Danych
 
-### 1. Create Decision Session
+### 1. Tworzenie Sesji Decyzyjnej
 
 ```
 POST /v1/decision/sessions
 {
-  "context": "Should I change jobs?",
-  "options": "Stay, Leave, Negotiate",
+  "context": "Czy powinienem zmienić pracę?",
+  "options": "Zostać, Odejść, Negocjować",
   "stress_level": 7
 }
 ```
 
-**Backend Flow**:
-1. Validate input (Pydantic)
-2. Pass to `DecisionOrchestrator`
-3. Orchestrator runs 5 agents sequentially
-4. Assemble `DecisionBrief`
-5. Store in Postgres
-6. Generate embedding (async)
-7. Return Decision Brief
+**Przepływ Backendu**:
+1. Walidacja danych wejściowych (Pydantic)
+2. Przekazanie do `DecisionOrchestrator`
+3. Orkiestrator uruchamia 5 agentów sekwencyjnie
+4. Składanie `DecisionBrief`
+5. Przechowanie w Postgres
+6. Generowanie osadzenia (async)
+7. Zwrócenie Briefu Decyzyjnego
 
-**Response**:
+**Odpowiedź**:
 ```json
 {
   "id": "uuid",
@@ -195,96 +195,96 @@ POST /v1/decision/sessions
 }
 ```
 
-### 2. Retrieve Session
+### 2. Pobieranie Sesji
 
 ```
 GET /v1/decision/sessions/{id}
 ```
 
-Fetch from Postgres, return full session + Decision Brief.
+Pobranie z Postgres, zwrócenie pełnej sesji + Briefu Decyzyjnego.
 
-### 3. List Sessions
+### 3. Lista Sesji
 
 ```
 GET /v1/decision/sessions?user_id=abc&page=1&page_size=20
 ```
 
-Paginated list of user's past sessions.
+Paginowana lista poprzednich sesji użytkownika.
 
 ---
 
-## 🌐 Frontend Architecture
+## 🌐 Architektura Frontendu
 
-### Pages (Next.js App Router)
+### Strony (Next.js App Router)
 
-| Route              | Component         | Purpose                          |
+| Trasa              | Komponent         | Cel                              |
 |--------------------|-------------------|----------------------------------|
-| `/`                | `page.tsx`        | Landing + 3-question form        |
-| `/session/[id]`    | `page.tsx`        | Decision Brief detail view       |
-| `/history`         | `page.tsx`        | List of past sessions            |
+| `/`                | `page.tsx`        | Strona główna + formularz 3 pytań|
+| `/session/[id]`    | `page.tsx`        | Widok szczegółów Briefu Decyzyjnego |
+| `/history`         | `page.tsx`        | Lista poprzednich sesji          |
 
-### Components
+### Komponenty
 
-- **DecisionForm**: 3-question form with validation
-- **DecisionBrief**: Display options, calm step, control question
-- **HistoryList**: List past sessions with previews
+- **DecisionForm**: Formularz 3 pytań z walidacją
+- **DecisionBrief**: Wyświetlanie opcji, kroku uspokajającego, pytania kontrolnego
+- **HistoryList**: Lista poprzednich sesji z podglądami
 
-### State Management
+### Zarządzanie Stanem
 
-- **Local State**: React `useState` for forms
-- **API Client**: Centralized in `lib/api.ts`
-- **No global state library needed for MVP**
+- **Stan Lokalny**: React `useState` dla formularzy
+- **Klient API**: Scentralizowany w `lib/api.ts`
+- **Brak potrzeby biblioteki stanu globalnego dla MVP**
 
 ---
 
-## 🚀 Deployment
+## 🚀 Wdrożenie
 
-### Docker Compose (Local Dev)
+### Docker Compose (Rozwój Lokalny)
 
 ```bash
 docker compose --profile dev up --build
 ```
 
-**Services**:
+**Usługi**:
 - `postgres`: PostgreSQL 16 + pgvector
-- `api`: FastAPI backend
-- `web`: Next.js frontend
+- `api`: Backend FastAPI
+- `web`: Frontend Next.js
 
-**Profiles**:
-- `dev`: Development mode (hot reload)
-- `prod`: Production mode (optimized builds)
-- `observability`: Adds metrics/tracing (optional)
+**Profile**:
+- `dev`: Tryb deweloperski (hot reload)
+- `prod`: Tryb produkcyjny (zoptymalizowane buildy)
+- `observability`: Dodaje metryki/śledzenie (opcjonalnie)
 
-### Environment Variables
+### Zmienne Środowiskowe
 
-See `.env.example` for full list. **Required**:
+Zobacz `.env.example` dla pełnej listy. **Wymagane**:
 - `DATABASE_URL`
 - `OPENAI_API_KEY`
 - `NEXT_PUBLIC_API_URL`
 
-### Migrations
+### Migracje
 
 ```bash
-# Apply migrations
+# Zastosowanie migracji
 alembic upgrade head
 
-# Create new migration
-alembic revision --autogenerate -m "description"
+# Utworzenie nowej migracji
+alembic revision --autogenerate -m "opis"
 ```
 
 ---
 
-## 🧪 Testing Strategy
+## 🧪 Strategia Testowania
 
 ### Backend
 
-| Type          | Tool    | Coverage      |
-|---------------|---------|---------------|
-| Unit          | pytest  | Agents, utils |
-| Integration   | pytest  | API endpoints |
-| Contract      | OpenAPI | Schema tests  |
+| Typ           | Narzędzie | Pokrycie      |
+|---------------|-----------|---------------|
+| Jednostkowe   | pytest    | Agenty, utils |
+| Integracyjne  | pytest    | Endpointy API |
+| Kontraktowe   | OpenAPI   | Testy schematu|
 
-**Run Tests**:
+**Uruchomienie Testów**:
 ```bash
 cd services/api
 pytest --cov=src
@@ -292,12 +292,12 @@ pytest --cov=src
 
 ### Frontend
 
-| Type          | Tool       | Coverage           |
-|---------------|------------|--------------------|
-| E2E           | Playwright | Full user flows    |
-| Unit          | Vitest     | Components (future)|
+| Typ           | Narzędzie  | Pokrycie              |
+|---------------|------------|-----------------------|
+| E2E           | Playwright | Pełne przepływy użytkownika |
+| Jednostkowe   | Vitest     | Komponenty (przyszłość) |
 
-**Run E2E**:
+**Uruchomienie E2E**:
 ```bash
 cd apps/web
 npm run test:e2e
@@ -305,132 +305,132 @@ npm run test:e2e
 
 ### CI/CD
 
-GitHub Actions runs on every push:
-1. Lint (ruff, eslint)
-2. Type check (mypy, tsc)
-3. Unit tests
-4. Docker builds
+GitHub Actions uruchamia się przy każdym push:
+1. Linting (ruff, eslint)
+2. Sprawdzanie typów (mypy, tsc)
+3. Testy jednostkowe
+4. Buildy Docker
 
 ---
 
-## 🔐 Security & Privacy
+## 🔐 Bezpieczeństwo i Prywatność
 
-### Data Protection
+### Ochrona Danych
 
-- **No PII required**: Anonymous user tracking (optional `user_id`)
-- **No session cookies**: Stateless API
-- **HTTPS only in production**
+- **Brak wymaganego PII**: Anonimowe śledzenie użytkownika (opcjonalny `user_id`)
+- **Brak cookies sesji**: Bezstanowe API
+- **Tylko HTTPS w produkcji**
 
-### API Security
+### Bezpieczeństwo API
 
-- **Input validation**: Pydantic schemas
-- **Rate limiting**: Optional (via Redis)
-- **CORS**: Configured origins only
-- **SQL injection protection**: SQLAlchemy ORM
+- **Walidacja danych wejściowych**: Schematy Pydantic
+- **Ograniczenie szybkości**: Opcjonalne (przez Redis)
+- **CORS**: Tylko skonfigurowane originy
+- **Ochrona przed SQL injection**: ORM SQLAlchemy
 
-### Content Safety
+### Bezpieczeństwo Treści
 
-- **Keyword blocking**: Dangerous content filtered
-- **OpenAI moderation**: Can add moderation API (future)
-- **Disclaimers**: Always visible
+- **Blokowanie słów kluczowych**: Filtrowanie niebezpiecznej treści
+- **Moderacja OpenAI**: Można dodać API moderacji (przyszłość)
+- **Zastrzeżenia**: Zawsze widoczne
 
 ---
 
-## 📈 Observability (Optional)
+## 📈 Obserwowalność (Opcjonalnie)
 
-### Logging
+### Logowanie
 
-**Format**: Structured JSON (via `structlog`)
+**Format**: Strukturalny JSON (przez `structlog`)
 
-**Fields**:
+**Pola**:
 - `timestamp`, `level`, `message`
 - `agent_name`, `session_id`, `duration_ms`
-- `error`, `stack_trace` (on errors)
+- `error`, `stack_trace` (przy błędach)
 
-**Output**: stdout (captured by Docker logs)
+**Wyjście**: stdout (przechwytywane przez logi Docker)
 
-### Metrics (Future)
+### Metryki (Przyszłość)
 
-- Request latency (p50, p95, p99)
-- Agent processing time
-- Error rates
-- OpenAI token usage
+- Opóźnienie żądań (p50, p95, p99)
+- Czas przetwarzania agentów
+- Wskaźniki błędów
+- Użycie tokenów OpenAI
 
-**Tools**: Prometheus + Grafana
-
----
-
-## 🛣️ Roadmap (Post-MVP)
-
-### Phase 2: Enhanced Personalization
-- Use vector search for contextual recommendations
-- Pattern detection across user's history
-- "You've faced similar decisions before" insights
-
-### Phase 3: Multimodal Inputs
-- Voice input → transcription → processing
-- Image upload → OCR → context extraction
-- Support for non-text decision artifacts
-
-### Phase 4: Collaboration
-- Share Decision Briefs with trusted advisors
-- Anonymous peer feedback (optional)
-- Export decisions to PDF/markdown
-
-### Phase 5: Advanced Safety
-- OpenAI Moderation API integration
-- Custom fine-tuned safety classifier
-- Real-time crisis detection with escalation
+**Narzędzia**: Prometheus + Grafana
 
 ---
 
-## 🤝 Contributing
+## 🛣️ Mapa Drogowa (Post-MVP)
 
-### Code Standards
+### Faza 2: Ulepszona Personalizacja
+- Użycie wyszukiwania wektorowego dla kontekstowych rekomendacji
+- Wykrywanie wzorców w historii użytkownika
+- Wglądy "Już miałeś podobne decyzje wcześniej"
+
+### Faza 3: Dane Wejściowe Multimodalne
+- Wejście głosowe → transkrypcja → przetwarzanie
+- Przesyłanie obrazów → OCR → ekstrakcja kontekstu
+- Wsparcie dla nietekstowych artefaktów decyzyjnych
+
+### Faza 4: Współpraca
+- Udostępnianie Briefów Decyzyjnych zaufanym doradcom
+- Anonimowy feedback rówieśników (opcjonalnie)
+- Eksport decyzji do PDF/markdown
+
+### Faza 5: Zaawansowane Bezpieczeństwo
+- Integracja API Moderacji OpenAI
+- Niestandardowy dostrojony klasyfikator bezpieczeństwa
+- Wykrywanie kryzysu w czasie rzeczywistym z eskalacją
+
+---
+
+## 🤝 Współpraca
+
+### Standardy Kodu
 
 - **Python**: Black, Ruff, MyPy
 - **TypeScript**: ESLint, Prettier
-- **Tests**: Required for new features
-- **Documentation**: Update this file for architectural changes
+- **Testy**: Wymagane dla nowych funkcji
+- **Dokumentacja**: Aktualizuj ten plik dla zmian architektonicznych
 
-### Pull Request Flow
+### Przepływ Pull Request
 
-1. Create feature branch
-2. Implement + test locally
-3. Run `black . && ruff check . && pytest`
-4. Submit PR with clear description
-5. CI must pass
+1. Utwórz branch z funkcją
+2. Implementuj + testuj lokalnie
+3. Uruchom `black . && ruff check . && pytest`
+4. Prześlij PR z jasnym opisem
+5. CI musi przejść
 
 ---
 
-## 📚 References
+## 📚 Referencje
 
-### External Resources
+### Zasoby Zewnętrzne
 
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Dokumentacja FastAPI](https://fastapi.tiangolo.com/)
 - [Next.js App Router](https://nextjs.org/docs/app)
 - [pgvector](https://github.com/pgvector/pgvector)
-- [OpenAI API Reference](https://platform.openai.com/docs/api-reference)
+- [Referencja API OpenAI](https://platform.openai.com/docs/api-reference)
 - [RFC 7807 - Problem Details](https://datatracker.ietf.org/doc/html/rfc7807)
 
-### Design Decisions
+### Decyzje Projektowe
 
-| Decision                    | Rationale                                           |
+| Decyzja                     | Uzasadnienie                                        |
 |-----------------------------|-----------------------------------------------------|
-| FastAPI over Flask/Django   | Modern, async, auto-generated OpenAPI docs          |
-| Next.js App Router          | Latest patterns, React Server Components            |
-| pgvector over Pinecone      | Self-hosted, lower latency, cost-effective for MVP  |
-| Custom orchestrator         | Flexibility, no LangChain overhead, clearer control |
-| Docker Compose              | Simple local dev, easy CI/CD, reproducible          |
+| FastAPI zamiast Flask/Django| Nowoczesne, async, automatycznie generowane dokumenty OpenAPI |
+| Next.js App Router          | Najnowsze wzorce, React Server Components           |
+| pgvector zamiast Pinecone   | Self-hosted, niższe opóźnienie, opłacalne dla MVP   |
+| Niestandardowy orkiestrator | Elastyczność, brak narzutu LangChain, jaśniejsza kontrola |
+| Docker Compose              | Prosty rozwój lokalny, łatwe CI/CD, reprodukowalne |
 
 ---
 
-## 📞 Support
+## 📞 Wsparcie
 
-- **Issues**: GitHub Issues
-- **Docs**: This file + README.md
-- **Code**: Inline comments + docstrings
+- **Problemy**: GitHub Issues
+- **Dokumentacja**: Ten plik + README.md
+- **Kod**: Komentarze inline + docstringi
 
 ---
 
-**Built with ❤️ by humans, enhanced by AI agents.**
+**Zbudowane z ❤️ przez ludzi, wzmocnione przez agentów AI.**

@@ -35,7 +35,7 @@ export default function SessionPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-calm-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your decision brief...</p>
+          <p className="text-gray-600">Ładowanie analizy decyzji...</p>
         </div>
       </div>
     );
@@ -45,9 +45,9 @@ export default function SessionPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-red-600 mb-4">{error || 'Session not found'}</p>
+          <p className="text-red-600 mb-4">{error || 'Sesja nie została znaleziona'}</p>
           <button onClick={() => router.push('/')} className="btn-primary">
-            Create New Session
+            Utwórz Nową Sesję
           </button>
         </div>
       </div>
@@ -62,20 +62,20 @@ export default function SessionPage() {
           <div className="flex items-start justify-between gap-4 mb-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Your Decision Brief
+                Analiza Decyzji
               </h1>
               <p className="text-gray-600">{formatDate(session.created_at)}</p>
             </div>
             <span className={`badge ${getStressLevelColor(session.stress_level)} border`}>
-              Stress: {session.stress_level}/10
+              Stres: {session.stress_level}/10
             </span>
           </div>
 
           {/* Original Context */}
           <div className="card bg-gray-50">
-            <h3 className="font-semibold text-gray-700 mb-2">Your Decision Context:</h3>
+            <h3 className="font-semibold text-gray-700 mb-2">Kontekst Twojej Decyzji:</h3>
             <p className="text-gray-600 mb-3">{session.input.context}</p>
-            <h3 className="font-semibold text-gray-700 mb-2">Options Considered:</h3>
+            <h3 className="font-semibold text-gray-700 mb-2">Rozważane Opcje:</h3>
             <p className="text-gray-600">{session.input.options}</p>
           </div>
         </div>
@@ -86,10 +86,10 @@ export default function SessionPage() {
         {/* Actions */}
         <div className="mt-8 flex gap-4 justify-center">
           <button onClick={() => router.push('/')} className="btn-primary">
-            Create New Session
+            Utwórz Nową Sesję
           </button>
           <button onClick={() => router.push('/history')} className="btn-secondary">
-            View History
+            Zobacz Historię
           </button>
         </div>
       </div>

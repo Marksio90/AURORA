@@ -24,18 +24,18 @@ logger = get_logger(__name__)
 
 
 class DecisionService:
-    """Handles decision session creation and retrieval."""
+    """Obsługuje tworzenie i pobieranie sesji decyzyjnych."""
 
     def __init__(
         self,
         db_session: AsyncSession,
         openai_client: OpenAIClient,
     ) -> None:
-        """Initialize decision service.
+        """Inicjalizuje serwis decyzyjny.
 
         Args:
-            db_session: Database session
-            openai_client: OpenAI client instance
+            db_session: Sesja bazy danych
+            openai_client: Instancja klienta OpenAI
         """
         self.db = db_session
         self.openai_client = openai_client
@@ -45,18 +45,18 @@ class DecisionService:
     async def create_decision_session(
         self, request: CreateDecisionSessionRequest
     ) -> DecisionSessionResponse:
-        """Create a new decision session.
+        """Tworzy nową sesję decyzyjną.
 
         Args:
-            request: Decision session request
+            request: Żądanie sesji decyzyjnej
 
         Returns:
-            Complete decision session with results
+            Kompletna sesja decyzyjna z wynikami
         """
         start_time = time.time()
 
         logger.info(
-            "decision_session_creating",
+            "tworzenie_sesji_decyzyjnej",
             stress_level=request.stress_level,
             has_user_id=request.user_id is not None,
         )
@@ -96,13 +96,13 @@ class DecisionService:
                     embedding=embedding,
                 )
             except Exception as e:
-                logger.warning("embedding_failed", error=str(e), session_id=session.id)
+                logger.warning("blad_embedding", error=str(e), session_id=session.id)
 
         await self.db.commit()
         await self.db.refresh(session)
 
         logger.info(
-            "decision_session_created",
+            "sesja_decyzyjna_utworzona",
             session_id=session.id,
             processing_time=processing_time,
         )
@@ -118,16 +118,16 @@ class DecisionService:
         )
 
     async def get_decision_session(self, session_id: UUID) -> DecisionSessionResponse:
-        """Get a decision session by ID.
+        """Pobiera sesję decyzyjną według ID.
 
         Args:
-            session_id: Session UUID
+            session_id: UUID sesji
 
         Returns:
-            Decision session response
+            Odpowiedź sesji decyzyjnej
 
         Raises:
-            NotFoundException: If session not found
+            NotFoundException: Jeśli sesja nie została znaleziona
         """
         stmt = select(DecisionSession).where(DecisionSession.id == session_id)
         result = await self.db.execute(stmt)
@@ -135,7 +135,7 @@ class DecisionService:
 
         if not session:
             raise NotFoundException(
-                detail=f"Decision session {session_id} not found",
+                detail=f"Sesja decyzyjna {session_id} nie została znaleziona",
                 resource_type="DecisionSession",
             )
 
@@ -165,15 +165,15 @@ class DecisionService:
         page: int = 1,
         page_size: int = 20,
     ) -> ListDecisionSessionsResponse:
-        """List decision sessions with pagination.
+        """Wyświetla listę sesji decyzyjnych z paginacją.
 
         Args:
-            user_id: Optional filter by user ID
-            page: Page number (1-indexed)
-            page_size: Results per page
+            user_id: Opcjonalny filtr według ID użytkownika
+            page: Numer strony (indeksowany od 1)
+            page_size: Wyników na stronę
 
         Returns:
-            Paginated list of sessions
+            Stronicowana lista sesji
         """
         # Build query
         stmt = select(DecisionSession).order_by(DecisionSession.created_at.desc())
@@ -220,7 +220,7 @@ class DecisionService:
             )
 
         logger.info(
-            "decision_sessions_listed",
+            "lista_sesji_decyzyjnych",
             total=total,
             page=page,
             returned=len(session_responses),

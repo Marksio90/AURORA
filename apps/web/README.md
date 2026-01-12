@@ -1,180 +1,180 @@
-# Decision Calm Web
+# Spokojne Decyzje Web
 
-Next.js 14 frontend for Decision Calm Engine.
+Frontend Next.js 14 dla Spokojnych Decyzji.
 
-## 🚀 Quick Start
+## 🚀 Szybki Start
 
-### Development
+### Rozwój
 
 ```bash
-# Install dependencies
+# Instalacja zależności
 npm install
 
-# Set environment
+# Ustawienie środowiska
 export NEXT_PUBLIC_API_URL=http://localhost:8000
 
-# Run dev server
+# Uruchomienie serwera deweloperskiego
 npm run dev
 ```
 
-Open http://localhost:3000
+Otwórz http://localhost:3000
 
 ### Docker
 
 ```bash
-cd ../../  # Go to repo root
+cd ../../  # Przejdź do katalogu głównego repozytorium
 docker compose --profile dev up web
 ```
 
-## 📁 Structure
+## 📁 Struktura
 
 ```
 src/
-├── app/              # Next.js App Router pages
-│   ├── page.tsx      # Landing page with 3-question form
-│   ├── session/[id]/ # Decision brief detail page
-│   └── history/      # Session history list
-├── components/       # React components
+├── app/              # Strony Next.js App Router
+│   ├── page.tsx      # Strona główna z formularzem 3 pytań
+│   ├── session/[id]/ # Strona szczegółów briefu decyzyjnego
+│   └── history/      # Lista historii sesji
+├── components/       # Komponenty React
 │   ├── DecisionForm.tsx
 │   ├── DecisionBrief.tsx
 │   └── HistoryList.tsx
-├── lib/              # Utilities
-│   ├── api.ts        # API client
-│   ├── types.ts      # TypeScript types
-│   └── utils.ts      # Helper functions
-└── styles/           # Global CSS with Tailwind
+├── lib/              # Narzędzia
+│   ├── api.ts        # Klient API
+│   ├── types.ts      # Typy TypeScript
+│   └── utils.ts      # Funkcje pomocnicze
+└── styles/           # Globalny CSS z Tailwind
 ```
 
-## 🧪 Testing
+## 🧪 Testowanie
 
-### E2E Tests (Playwright)
+### Testy E2E (Playwright)
 
 ```bash
-# Install Playwright browsers
+# Instalacja przeglądarek Playwright
 npx playwright install
 
-# Run tests
+# Uruchomienie testów
 npm run test:e2e
 
-# Run tests in UI mode
+# Uruchomienie testów w trybie UI
 npx playwright test --ui
 ```
 
-### Type Checking
+### Sprawdzanie Typów
 
 ```bash
 npm run type-check
 ```
 
-## 🎨 Styling
+## 🎨 Stylizacja
 
 - **Framework**: Tailwind CSS
-- **Design System**:
-  - Colors: `calm-*` palette (blues)
-  - Components: Utility classes + custom components in `globals.css`
-  - Animations: Fade-in, slide-up
+- **System Projektowy**:
+  - Kolory: paleta `calm-*` (niebieskie)
+  - Komponenty: Klasy użytkowe + niestandardowe komponenty w `globals.css`
+  - Animacje: Fade-in, slide-up
 
-### Key Components
+### Kluczowe Komponenty
 
-- `.btn-primary` - Primary action buttons
-- `.btn-secondary` - Secondary buttons
-- `.input-field` - Form inputs
-- `.card` - Content cards
-- `.badge` - Status badges
+- `.btn-primary` - Główne przyciski akcji
+- `.btn-secondary` - Przyciski drugorzędne
+- `.input-field` - Pola formularza
+- `.card` - Karty treści
+- `.badge` - Znaczniki statusu
 
-## 🔧 Configuration
+## 🔧 Konfiguracja
 
-### Environment Variables
+### Zmienne Środowiskowe
 
-- `NEXT_PUBLIC_API_URL` - Backend API URL (required)
+- `NEXT_PUBLIC_API_URL` - URL API backendu (wymagane)
 
 ### Build
 
 ```bash
-# Production build
+# Build produkcyjny
 npm run build
 
-# Start production server
+# Uruchomienie serwera produkcyjnego
 npm start
 ```
 
-## 📊 API Integration
+## 📊 Integracja API
 
-API client in `src/lib/api.ts`:
+Klient API w `src/lib/api.ts`:
 
 ```typescript
 import { apiClient } from '@/lib/api';
 
-// Create session
+// Tworzenie sesji
 const session = await apiClient.createDecisionSession({
   context: "...",
   options: "...",
   stress_level: 7,
 });
 
-// Get session
+// Pobieranie sesji
 const session = await apiClient.getDecisionSession(sessionId);
 
-// List sessions
+// Lista sesji
 const sessions = await apiClient.listDecisionSessions();
 ```
 
-## 🎯 User Flow
+## 🎯 Przepływ Użytkownika
 
-1. **Landing** (`/`)
-   - Hero with value proposition
-   - 3-question form
-   - Submit to create session
+1. **Strona Główna** (`/`)
+   - Hero z propozycją wartości
+   - Formularz 3 pytań
+   - Przesłanie do utworzenia sesji
 
-2. **Decision Brief** (`/session/[id]`)
-   - Original context
-   - Calm step suggestion
-   - Decision options with consequences
-   - Control question
-   - Next check-in suggestion
+2. **Brief Decyzyjny** (`/session/[id]`)
+   - Oryginalny kontekst
+   - Sugestia kroku uspokajającego
+   - Opcje decyzji z konsekwencjami
+   - Pytanie kontrolne
+   - Sugestia następnego sprawdzenia
 
-3. **History** (`/history`)
-   - List of past sessions
-   - Quick preview of each
-   - Click to view full brief
+3. **Historia** (`/history`)
+   - Lista poprzednich sesji
+   - Szybki podgląd każdej
+   - Kliknięcie, aby zobaczyć pełny brief
 
-## 🛡️ Safety Features
+## 🛡️ Funkcje Bezpieczeństwa
 
-- Clear disclaimers on every page
-- Crisis hotline numbers in footer
-- Non-judgmental language
-- User autonomy emphasized
+- Wyraźne zastrzeżenia na każdej stronie
+- Numery infolinii kryzysowych w stopce
+- Język bez osądzania
+- Podkreślona autonomia użytkownika
 
-## 📱 Responsive Design
+## 📱 Design Responsywny
 
-- Mobile-first approach
-- Breakpoints: sm (640px), md (768px), lg (1024px)
-- Touch-friendly UI elements
+- Podejście mobile-first
+- Breakpointy: sm (640px), md (768px), lg (1024px)
+- Elementy UI przyjazne dla dotyku
 
-## 🔍 Code Quality
+## 🔍 Jakość Kodu
 
 ```bash
-# Lint
+# Linting
 npm run lint
 
-# Format
+# Formatowanie
 npm run format
 
-# Check formatting
+# Sprawdzenie formatowania
 npm run format:check
 ```
 
-## 🤝 Contributing
+## 🤝 Współpraca
 
-1. Follow existing component patterns
-2. Use TypeScript strictly
-3. Test with Playwright for new flows
-4. Maintain accessibility (ARIA labels, semantic HTML)
+1. Postępuj zgodnie z istniejącymi wzorcami komponentów
+2. Używaj TypeScript ściśle
+3. Testuj z Playwright dla nowych przepływów
+4. Utrzymuj dostępność (etykiety ARIA, semantyczny HTML)
 
-## 📝 Development Notes
+## 📝 Notatki Deweloperskie
 
 - Next.js 14 App Router
-- Server Components by default
-- Client Components marked with `'use client'`
-- Type-safe API calls
-- Error boundaries for graceful failures
+- Server Components domyślnie
+- Client Components oznaczone przez `'use client'`
+- Bezpieczne typowo wywołania API
+- Error boundaries dla łagodnych błędów

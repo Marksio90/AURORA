@@ -13,16 +13,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Format date to human-readable string
+ * Format date to human-readable string in Polish format (DD.MM.YYYY HH:mm)
  */
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('pl-PL', {
     year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
+    timeZone: 'Europe/Warsaw',
   }).format(date);
 }
 

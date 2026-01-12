@@ -9,48 +9,48 @@ from src.schemas.agents import CalmStep, DecisionOption
 
 
 class CreateDecisionSessionRequest(BaseModel):
-    """Request to create a new decision session (3 questions)."""
+    """Żądanie utworzenia nowej sesji decyzyjnej (3 pytania)."""
 
     context: str = Field(
         ...,
         min_length=10,
         max_length=2000,
-        description="What decision are you facing?",
-        examples=["Should I change jobs? I have an offer but I'm comfortable here."],
+        description="Przed jaką decyzją stoisz?",
+        examples=["Czy powinienem zmienić pracę? Mam ofertę, ale tutaj jest mi wygodnie."],
     )
     options: str = Field(
         ...,
         min_length=5,
         max_length=1000,
-        description="What options are you considering?",
-        examples=["Stay at current job, Take new offer, Negotiate with current employer"],
+        description="Jakie opcje rozważasz?",
+        examples=["Zostać w obecnej pracy, Przyjąć nową ofertę, Negocjować z obecnym pracodawcą"],
     )
     stress_level: int = Field(
         ...,
         ge=1,
         le=10,
-        description="How stressed do you feel? (1=calm, 10=overwhelmed)",
+        description="Jak bardzo jesteś zestresowany/a? (1=spokojnie, 10=przytłoczony/a)",
     )
     user_id: str | None = Field(
         default=None,
-        description="Optional anonymous user ID for history tracking",
+        description="Opcjonalne anonimowe ID użytkownika do śledzenia historii",
     )
 
 
 class NextCheckIn(BaseModel):
-    """Suggested next check-in time."""
+    """Sugerowany czas następnej wizyty."""
 
     suggestion: str = Field(
         ...,
-        description="Human-readable suggestion (e.g., '30 minutes', 'tomorrow morning')",
+        description="Sugestia w czytelnej formie (np. '30 minut', 'jutro rano')",
     )
     reasoning: str = Field(
-        ..., description="Brief explanation for this timing", max_length=200
+        ..., description="Krótkie wyjaśnienie tego czasu", max_length=200
     )
 
 
 class DecisionBrief(BaseModel):
-    """The final output: Decision Brief shown to user."""
+    """Końcowy wynik: Podsumowanie decyzji pokazane użytkownikowi."""
 
     options: list[DecisionOption] = Field(..., min_items=2, max_items=4)
     calm_step: CalmStep
@@ -58,17 +58,17 @@ class DecisionBrief(BaseModel):
         ...,
         min_length=10,
         max_length=300,
-        description="A question to help user reflect",
+        description="Pytanie pomagające w refleksji",
     )
     next_check_in: NextCheckIn
     disclaimer: str = Field(
-        default="This is decision support, not medical or therapeutic advice.",
-        description="Safety disclaimer",
+        default="To jest wsparcie w podejmowaniu decyzji, a nie porada medyczna lub terapeutyczna.",
+        description="Zastrzeżenie bezpieczeństwa",
     )
 
 
 class DecisionSessionResponse(BaseModel):
-    """Response for a completed decision session."""
+    """Odpowiedź dla zakończonej sesji decyzyjnej."""
 
     id: UUID
     created_at: datetime
@@ -83,7 +83,7 @@ class DecisionSessionResponse(BaseModel):
 
 
 class ListDecisionSessionsResponse(BaseModel):
-    """Paginated list of decision sessions."""
+    """Stronicowana lista sesji decyzyjnych."""
 
     sessions: list[DecisionSessionResponse]
     total: int

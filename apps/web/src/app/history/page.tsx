@@ -30,7 +30,7 @@ export default function HistoryPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-calm-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your history...</p>
+          <p className="text-gray-600">Ładowanie historii...</p>
         </div>
       </div>
     );
@@ -42,7 +42,7 @@ export default function HistoryPage() {
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
           <button onClick={() => window.location.reload()} className="btn-primary">
-            Try Again
+            Spróbuj Ponownie
           </button>
         </div>
       </div>
@@ -54,17 +54,17 @@ export default function HistoryPage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 animate-fade-in">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Decision History
+            Historia Decyzji
           </h1>
           <p className="text-gray-600">
-            Review your past decision sessions and insights.
+            Przejrzyj swoje poprzednie sesje decyzyjne i analizy.
           </p>
         </div>
 
         {data && (
           <div className="animate-slide-up">
             <div className="mb-4 text-gray-600">
-              Total Sessions: <strong>{data.total}</strong>
+              Łączna liczba sesji: <strong>{data.total}</strong>
             </div>
             <HistoryList sessions={data.sessions} />
           </div>

@@ -1,102 +1,102 @@
-# Decision Calm Engine 🧘
+# Spokojne Decyzje 🧘
 
 **Podejmuj spokojniejsze decyzje w 60 sekund.**
 
-World-class MVP platform for multiagent, multimodal decision support — designed to help users make calmer, better decisions without taking control away from humans.
+Platforma MVP klasy światowej dla wieloagentowego, multimodalnego wsparcia decyzyjnego — zaprojektowana, aby pomóc użytkownikom podejmować spokojniejsze, lepsze decyzje bez odbierania im kontroli.
 
-## 🎯 What is this?
+## 🎯 Czym to jest?
 
-Decision Calm Engine is a **Decision Support System** (not therapy, not medical advice) that:
+Spokojne Decyzje to **System Wsparcia Decyzji** (nie terapia, nie porada medyczna), który:
 
-- Analyzes your decision context using **5 specialized AI agents**
-- Presents **3 possible paths** with consequences and emotional risks
-- Suggests **one calming action** tailored to your stress level
-- Proposes **when to check back** (no manipulation, full autonomy)
-- Remembers past decisions via **vector memory** for personalized context
+- Analizuje kontekst Twojej decyzji wykorzystując **5 wyspecjalizowanych agentów AI**
+- Prezentuje **3 możliwe ścieżki** z konsekwencjami i ryzykiem emocjonalnym
+- Sugeruje **jedną uspokajającą czynność** dopasowaną do Twojego poziomu stresu
+- Proponuje **kiedy wrócić do sprawy** (bez manipulacji, pełna autonomia)
+- Pamięta poprzednie decyzje dzięki **pamięci wektorowej** dla spersonalizowanego kontekstu
 
-## 🏗️ Architecture
+## 🏗️ Architektura
 
 - **Frontend**: Next.js 14 (App Router) + TypeScript + Tailwind
 - **Backend**: FastAPI + Python 3.11 + Pydantic v2
-- **Database**: PostgreSQL 16 + pgvector
-- **AI**: OpenAI GPT-4o-mini (with function calling & streaming)
-- **Orchestration**: Custom multi-agent system with 5 specialized agents
-- **Infrastructure**: Docker Compose (local dev & prod ready)
+- **Baza danych**: PostgreSQL 16 + pgvector
+- **AI**: OpenAI GPT-4o-mini (z function calling i streaming)
+- **Orkiestracja**: Niestandardowy system wieloagentowy z 5 wyspecjalizowanymi agentami
+- **Infrastruktura**: Docker Compose (gotowe na dev i prod)
 
-### Multi-Agent System
+### System Wieloagentowy
 
-1. **Intake Agent**: Normalizes user input into structured schema
-2. **Context Agent**: Asks 0-2 clarifying questions (minimal, non-spammy)
-3. **Calmness Agent**: Detects overload and suggests "Calm Steps"
-4. **Options & Consequences Agent**: Generates 2-4 options with consequences
-5. **Safety & Ethics Agent**: Blocks harmful content, ensures non-authoritarian tone
+1. **Agent Przyjmujący**: Normalizuje dane wejściowe użytkownika do ustrukturyzowanego schematu
+2. **Agent Kontekstowy**: Zadaje 0-2 pytania wyjaśniające (minimalistycznie, bez spamowania)
+3. **Agent Spokoju**: Wykrywa przeciążenie i sugeruje "Kroki Uspokajające"
+4. **Agent Opcji i Konsekwencji**: Generuje 2-4 opcje z konsekwencjami
+5. **Agent Bezpieczeństwa i Etyki**: Blokuje szkodliwe treści, zapewnia nieautorytarny ton
 
-## 🚀 Quick Start
+## 🚀 Szybki Start
 
-### Prerequisites
+### Wymagania
 
 - Docker & Docker Compose
-- OpenAI API key
+- Klucz API OpenAI
 
-### 1. Clone & Configure
+### 1. Klonowanie i Konfiguracja
 
 ```bash
 git clone <repo-url>
 cd AURORA
 cp .env.example .env
-# Edit .env and add your OPENAI_API_KEY
+# Edytuj .env i dodaj swój OPENAI_API_KEY
 ```
 
-### 2. Start the Platform
+### 2. Uruchomienie Platformy
 
 ```bash
-# Development mode (with hot reload for both API and Web)
+# Tryb deweloperski (z hot reload dla API i Web)
 docker compose --profile dev up --build
 
-# Production mode (optimized builds)
+# Tryb produkcyjny (zoptymalizowane buildy)
 docker compose --profile prod up --build
 
-# Stop all services
+# Zatrzymanie wszystkich usług
 docker compose --profile dev down
 ```
 
-**Note for Windows users**: Make sure Docker Desktop is running before executing these commands.
+**Uwaga dla użytkowników Windows**: Upewnij się, że Docker Desktop jest uruchomiony przed wykonaniem tych komend.
 
-### 3. Access
+### 3. Dostęp
 
-- **Web UI**: http://localhost:3000
-- **API Docs**: http://localhost:8000/docs
+- **Interfejs Web**: http://localhost:3000
+- **Dokumentacja API**: http://localhost:8000/docs
 - **Health Check**: http://localhost:8000/health
 
-## 📁 Monorepo Structure
+## 📁 Struktura Monorepo
 
 ```
 AURORA/
-├── apps/web/              # Next.js frontend
-├── services/api/          # FastAPI backend + agents
-├── packages/shared/       # Shared TypeScript types
-├── infra/docker/          # Docker configs
-└── docs/                  # Architecture docs
+├── apps/web/              # Frontend Next.js
+├── services/api/          # Backend FastAPI + agenty
+├── packages/shared/       # Współdzielone typy TypeScript
+├── infra/docker/          # Konfiguracje Docker
+└── docs/                  # Dokumentacja architektury
 ```
 
-## 🧪 Development
+## 🧪 Rozwój
 
 ### Backend (FastAPI)
 
 ```bash
 cd services/api
 
-# Install dependencies
+# Instalacja zależności
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
 
-# Run migrations
+# Uruchomienie migracji
 alembic upgrade head
 
-# Run tests
+# Uruchomienie testów
 pytest
 
-# Lint & format
+# Linting i formatowanie
 ruff check .
 black .
 mypy src/
@@ -107,131 +107,131 @@ mypy src/
 ```bash
 cd apps/web
 
-# Install dependencies
+# Instalacja zależności
 npm install
 
-# Run dev server
+# Uruchomienie serwera deweloperskiego
 npm run dev
 
-# Run tests
+# Uruchomienie testów
 npm run test
 npm run test:e2e
 
-# Lint & format
+# Linting i formatowanie
 npm run lint
 npm run format
 ```
 
-## 📊 API Endpoints
+## 📊 Endpointy API
 
-### Decision Sessions
+### Sesje Decyzyjne
 
-- `POST /v1/decision/sessions` - Create new decision session
-- `GET /v1/decision/sessions/{id}` - Get session by ID
-- `GET /v1/decision/sessions` - List all sessions (paginated)
+- `POST /v1/decision/sessions` - Utwórz nową sesję decyzyjną
+- `GET /v1/decision/sessions/{id}` - Pobierz sesję po ID
+- `GET /v1/decision/sessions` - Lista wszystkich sesji (paginowana)
 
-### Health & Monitoring
+### Zdrowie i Monitoring
 
-- `GET /health` - Health check
-- `GET /health/ready` - Readiness probe
+- `GET /health` - Sprawdzenie stanu zdrowia
+- `GET /health/ready` - Sonda gotowości
 
-## 🧠 How It Works (60 seconds flow)
+## 🧠 Jak to Działa (przepływ 60 sekund)
 
-1. **User enters**:
-   - Decision context (text)
-   - Available options
-   - Stress level (1-10)
+1. **Użytkownik wprowadza**:
+   - Kontekst decyzji (tekst)
+   - Dostępne opcje
+   - Poziom stresu (1-10)
 
-2. **System orchestrates 5 agents**:
-   - Intake → Context → Calmness → Options → Safety
+2. **System orkiestruje 5 agentów**:
+   - Przyjmujący → Kontekstowy → Spokoju → Opcji → Bezpieczeństwa
 
-3. **User receives**:
-   - **Decision Brief** (1 screen):
-     - 3 clear paths
-     - Consequences per path
-     - Emotional risks
-     - Control question
-   - **Calm Step**: One small calming action
-   - **Next Check-in**: Suggested return time
+3. **Użytkownik otrzymuje**:
+   - **Brief Decyzyjny** (1 ekran):
+     - 3 wyraźne ścieżki
+     - Konsekwencje dla każdej ścieżki
+     - Ryzyka emocjonalne
+     - Pytanie kontrolne
+   - **Krok Uspokajający**: Jedna mała uspokajająca czynność
+   - **Następne Sprawdzenie**: Sugerowany czas powrotu
 
-4. **System remembers**:
-   - Stores session in Postgres
-   - Embeds context in pgvector
-   - Uses history for future personalization
+4. **System pamięta**:
+   - Przechowuje sesję w Postgres
+   - Osadza kontekst w pgvector
+   - Wykorzystuje historię do przyszłej personalizacji
 
-## 🛡️ Safety & Ethics
+## 🛡️ Bezpieczeństwo i Etyka
 
-- ✅ **No diagnosis**: This is NOT medical/therapeutic advice
-- ✅ **Disclaimers**: Clear boundaries shown in UI
-- ✅ **Content safety**: Blocks self-harm, authoritarian commands
-- ✅ **User autonomy**: System presents options, never commands
-- ✅ **Transparency**: Users see reasoning, not black boxes
+- ✅ **Bez diagnozy**: To NIE jest porada medyczna/terapeutyczna
+- ✅ **Zastrzeżenia**: Jasne granice pokazane w UI
+- ✅ **Bezpieczeństwo treści**: Blokuje samookaleczenie, autorytarne polecenia
+- ✅ **Autonomia użytkownika**: System prezentuje opcje, nigdy nie rozkazuje
+- ✅ **Transparentność**: Użytkownicy widzą rozumowanie, nie czarne skrzynki
 
-## 🔧 Configuration
+## 🔧 Konfiguracja
 
-All configuration via environment variables (see `.env.example`):
+Cała konfiguracja przez zmienne środowiskowe (zobacz `.env.example`):
 
-- OpenAI API credentials
-- Database connection
-- Feature flags (vector search, observability)
-- Docker profiles (dev, prod)
+- Dane uwierzytelniające API OpenAI
+- Połączenie z bazą danych
+- Flagi funkcji (wyszukiwanie wektorowe, obserwowalność)
+- Profile Docker (dev, prod)
 
-## 📈 Observability (Optional)
+## 📈 Obserwowalność (Opcjonalnie)
 
-Enable with `--profile observability`:
+Włącz za pomocą `--profile observability`:
 
 ```bash
 docker compose --profile observability up
 ```
 
-Includes:
-- Structured JSON logging
-- Metrics (Prometheus ready)
-- Tracing (OpenTelemetry ready)
+Zawiera:
+- Strukturalne logowanie JSON
+- Metryki (gotowe na Prometheus)
+- Śledzenie (gotowe na OpenTelemetry)
 
-## 🧪 Testing
+## 🧪 Testowanie
 
 ### Backend
-- Unit tests: `pytest tests/unit/`
-- Integration tests: `pytest tests/integration/`
-- Coverage: `pytest --cov=src`
+- Testy jednostkowe: `pytest tests/unit/`
+- Testy integracyjne: `pytest tests/integration/`
+- Pokrycie: `pytest --cov=src`
 
 ### Frontend
-- Unit tests: `npm run test`
-- E2E tests: `npm run test:e2e` (Playwright)
+- Testy jednostkowe: `npm run test`
+- Testy E2E: `npm run test:e2e` (Playwright)
 
 ### CI/CD
-GitHub Actions runs on every push:
-- Lint & format checks
-- Type checking
-- Unit + integration tests
-- Docker builds
+GitHub Actions uruchamia się przy każdym push:
+- Sprawdzenie lintingu i formatowania
+- Sprawdzenie typów
+- Testy jednostkowe + integracyjne
+- Buildy Docker
 
-## 📝 License
+## 📝 Licencja
 
-MIT License - see LICENSE file for details.
+Licencja MIT - szczegóły w pliku LICENSE.
 
-## 🤝 Contributing
+## 🤝 Współpraca
 
-This is MVP code. Contributions welcome:
-1. Fork repo
-2. Create feature branch
-3. Ensure tests pass
-4. Submit PR
+To kod MVP. Współpraca mile widziana:
+1. Forkuj repozytorium
+2. Utwórz branch z funkcją
+3. Upewnij się, że testy przechodzą
+4. Prześlij PR
 
-## ⚠️ Disclaimer
+## ⚠️ Zastrzeżenie
 
-**Decision Calm Engine is NOT**:
-- Medical advice
-- Mental health therapy
-- Crisis intervention
-- A replacement for professional help
+**Spokojne Decyzje NIE JEST**:
+- Poradą medyczną
+- Terapią zdrowia psychicznego
+- Interwencją kryzysową
+- Zamiennikiem profesjonalnej pomocy
 
-**For mental health emergencies, contact**:
-- US: 988 (Suicide & Crisis Lifeline)
-- EU: 116 123 (Emotional support)
-- Your local emergency services
+**W nagłych przypadkach zdrowia psychicznego skontaktuj się**:
+- PL: 116 123 (Telefon Zaufania dla Dorosłych)
+- PL: 116 111 (Telefon Zaufania dla Dzieci i Młodzieży)
+- Twoje lokalne służby ratunkowe
 
 ---
 
-Built with ❤️ by humans, enhanced by AI agents.
+Zbudowane z ❤️ przez ludzi, wzmocnione przez agentów AI.
