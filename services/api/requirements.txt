@@ -13,8 +13,6 @@ pgvector==0.2.5
 
 # AI & Orchestration
 openai==1.12.0
-langgraph==0.0.28
-langchain-core==0.1.23
 
 # HTTP & Networking
 httpx==0.26.0
