@@ -13,7 +13,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./infra/docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-decisioncalm}"]
       interval: 10s
@@ -44,11 +44,11 @@ services:
   # FastAPI Backend
   api:
     build:
-      context: ../../
+      context: .
       dockerfile: infra/docker/Dockerfile.api
     container_name: decisioncalm-api
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-decisioncalm}:${POSTGRES_PASSWORD:-change_me_in_production}@postgres:5432/${POSTGRES_DB:-decisioncalm}
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-decisioncalm}:${POSTGRES_PASSWORD:-change_me_in_production}@postgres:5432/${POSTGRES_DB:-decisioncalm}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
       OPENAI_EMBEDDING_MODEL: ${OPENAI_EMBEDDING_MODEL:-text-embedding-3-small}
@@ -64,7 +64,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ../../services/api:/app
+      - ./services/api:/app
     depends_on:
       postgres:
         condition: service_healthy
@@ -83,7 +83,7 @@ services:
   # Next.js Frontend
   web:
     build:
-      context: ../../
+      context: .
       dockerfile: infra/docker/Dockerfile.web
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
@@ -94,7 +94,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ../../apps/web:/app
+      - ./apps/web:/app
       - /app/node_modules
       - /app/.next
     depends_on:
