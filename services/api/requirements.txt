@@ -1,0 +1,29 @@
+# Core Framework
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+pydantic==2.6.1
+pydantic-settings==2.1.0
+
+# Database
+sqlalchemy==2.0.27
+alembic==1.13.1
+psycopg[binary]==3.1.18
+asyncpg==0.29.0
+pgvector==0.2.5
+
+# AI & Orchestration
+openai==1.12.0
+langgraph==0.0.28
+langchain-core==0.1.23
+
+# HTTP & Networking
+httpx==0.26.0
+python-multipart==0.0.9
+
+# Security
+python-jose[cryptography]==3.3.0
+
+# Utilities
+tenacity==8.2.3
+structlog==24.1.0
+python-dotenv==1.0.1
