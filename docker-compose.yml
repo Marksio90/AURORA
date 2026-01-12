@@ -78,13 +78,11 @@ services:
       - dev
       - prod
 
-  # Next.js Frontend
+  # Next.js Frontend (Development)
   web:
     build:
       context: .
-      dockerfile: infra/docker/Dockerfile.web
-      args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+      dockerfile: infra/docker/Dockerfile.web.dev
     container_name: decisioncalm-web
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
@@ -101,6 +99,25 @@ services:
       - decisioncalm-network
     profiles:
       - dev
+
+  # Next.js Frontend (Production)
+  web-prod:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.web
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    container_name: decisioncalm-web-prod
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+      NEXT_TELEMETRY_DISABLED: 1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - decisioncalm-network
+    profiles:
       - prod
 
 volumes:

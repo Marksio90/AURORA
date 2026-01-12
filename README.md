@@ -50,12 +50,17 @@ cp .env.example .env
 ### 2. Start the Platform
 
 ```bash
-# Development mode (with hot reload)
+# Development mode (with hot reload for both API and Web)
 docker compose --profile dev up --build
 
-# Production mode
+# Production mode (optimized builds)
 docker compose --profile prod up --build
+
+# Stop all services
+docker compose --profile dev down
 ```
+
+**Note for Windows users**: Make sure Docker Desktop is running before executing these commands.
 
 ### 3. Access
 
