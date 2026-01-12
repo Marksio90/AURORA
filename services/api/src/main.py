@@ -5,6 +5,7 @@ from typing import AsyncGenerator
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from sqlalchemy import text
 
 from src.api.middleware import setup_middleware
 from src.api.v1 import api_router
@@ -37,7 +38,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # Verify database connection
     try:
         async with engine.begin() as conn:
-            await conn.execute("SELECT 1")
+            await conn.execute(text("SELECT 1"))
         logger.info("database_connected")
     except Exception as e:
         logger.error("database_connection_failed", error=str(e))
@@ -83,6 +84,16 @@ async def root() -> JSONResponse:
             "health": "/v1/health",
         }
     )
+
+
+@app.get("/health", include_in_schema=False)
+async def health_check() -> JSONResponse:
+    """Health check endpoint (Docker healthcheck compatible).
+
+    Returns:
+        Health status
+    """
+    return JSONResponse(content={"status": "healthy"})
 
 
 if __name__ == "__main__":
