@@ -87,9 +87,9 @@ async def create_decision_session(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
                 "type": "about:blank",
-                "title": "Internal Server Error",
+                "title": "Błąd wewnętrzny serwera",
                 "status": 500,
-                "detail": "An unexpected error occurred",
+                "detail": "Wystąpił nieoczekiwany błąd",
             },
         )
 
@@ -126,7 +126,7 @@ async def get_decision_session(
         logger.error("api_get_session_error", error=str(e))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to retrieve session",
+            detail="Nie udało się pobrać sesji",
         )
 
 
@@ -168,5 +168,5 @@ async def list_decision_sessions(
         logger.error("api_list_sessions_error", error=str(e))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to list sessions",
+            detail="Nie udało się pobrać listy sesji",
         )
