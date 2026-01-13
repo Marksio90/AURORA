@@ -1,7 +1,9 @@
 services:
   # PostgreSQL with pgvector extension
   postgres:
-    image: pgvector/pgvector:pg16
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.postgres
     container_name: decisioncalm-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-decisioncalm}
@@ -11,7 +13,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./infra/docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-decisioncalm}"]
       interval: 10s
