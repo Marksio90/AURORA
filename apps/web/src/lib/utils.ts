@@ -1,5 +1,5 @@
 /**
- * Utility functions for Decision Calm Engine
+ * Funkcje pomocnicze dla platformy Spokojne Decyzje
  */
 
 import { type ClassValue, clsx } from 'clsx';
@@ -37,13 +37,13 @@ export function getStressLevelColor(level: number): string {
 }
 
 /**
- * Get color class for emotional risk
+ * Pobierz klasę koloru dla ryzyka emocjonalnego
  */
 export function getEmotionalRiskColor(risk: string): string {
   const riskLower = risk.toLowerCase();
-  if (riskLower === 'high') return 'text-red-600';
-  if (riskLower === 'medium') return 'text-yellow-600';
-  return 'text-green-600';
+  if (riskLower === 'wysokie' || riskLower === 'high') return 'text-red-600';
+  if (riskLower === 'średnie' || riskLower === 'medium') return 'text-yellow-600';
+  return 'text-green-600'; // Niskie / Low
 }
 
 /**

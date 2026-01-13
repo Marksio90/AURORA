@@ -1,5 +1,5 @@
 /**
- * API client for Decision Calm Engine
+ * Klient API dla platformy Spokojne Decyzje
  */
 
 import {
@@ -35,12 +35,12 @@ class ApiClient {
 
       if (!response.ok) {
         const error: ApiError = await response.json();
-        throw new Error(error.detail || 'API request failed');
+        throw new Error(error.detail || 'Żądanie API nie powiodło się');
       }
 
       return await response.json();
     } catch (error) {
-      console.error('API request error:', error);
+      console.error('Błąd żądania API:', error);
       throw error;
     }
   }

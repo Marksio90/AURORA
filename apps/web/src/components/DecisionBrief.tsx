@@ -48,7 +48,7 @@ export default function DecisionBrief({ brief }: DecisionBriefProps) {
                   className={`badge ${getEmotionalRiskColor(option.emotional_risk)}
                              bg-opacity-10 border`}
                 >
-                  {option.emotional_risk === 'High' ? 'Wysokie' : option.emotional_risk === 'Medium' ? 'Średnie' : 'Niskie'} Ryzyko
+                  {option.emotional_risk} Ryzyko
                 </span>
               </div>
 

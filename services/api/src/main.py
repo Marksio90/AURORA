@@ -53,8 +53,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 # Create FastAPI app
 app = FastAPI(
-    title="Decision Calm Engine API",
-    description="Multi-agent decision support system for calmer, better decisions",
+    title="Spokojne Decyzje API",
+    description="Wieloagentowy system wsparcia decyzji dla spokojniejszych i lepszych decyzji",
     version="0.1.0",
     docs_url="/docs",
     redoc_url="/redoc",
@@ -77,9 +77,9 @@ async def root() -> JSONResponse:
     """
     return JSONResponse(
         content={
-            "service": "Decision Calm Engine API",
+            "service": "Spokojne Decyzje API",
             "version": "0.1.0",
-            "status": "running",
+            "status": "działa",
             "docs": "/docs",
             "health": "/v1/health",
         }
@@ -93,7 +93,7 @@ async def health_check() -> JSONResponse:
     Returns:
         Health status
     """
-    return JSONResponse(content={"status": "healthy"})
+    return JSONResponse(content={"status": "zdrowy"})
 
 
 if __name__ == "__main__":

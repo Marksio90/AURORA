@@ -98,9 +98,9 @@ def setup_middleware(app: FastAPI) -> None:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={
                 "type": "about:blank",
-                "title": "Internal Server Error",
+                "title": "Błąd wewnętrzny serwera",
                 "status": 500,
-                "detail": "An unexpected error occurred",
+                "detail": "Wystąpił nieoczekiwany błąd",
             },
         )
 

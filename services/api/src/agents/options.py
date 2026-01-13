@@ -46,7 +46,7 @@ Zwróć JSON:
         "Konsekwencja 2",
         "Konsekwencja 3"
       ],
-      "emotional_risk": "Low|Medium|High",
+      "emotional_risk": "Niskie|Średnie|Wysokie",
       "confidence_level": 0.0-1.0
     }
   ],
@@ -82,7 +82,7 @@ Przedstawiaj opcje neutralnie. Nigdy nie rozkazuj ani nie przepisuj. To użytkow
                         title=opt_dict.get("title", "Nieznana opcja"),
                         description=opt_dict.get("description", ""),
                         consequences=opt_dict.get("consequences", [])[:5],  # Max 5
-                        emotional_risk=opt_dict.get("emotional_risk", "Medium"),
+                        emotional_risk=opt_dict.get("emotional_risk", "Średnie"),
                         confidence_level=opt_dict.get("confidence_level", 0.7),
                     )
                     decision_options.append(decision_option)
@@ -132,14 +132,14 @@ Przedstawiaj opcje neutralnie. Nigdy nie rozkazuj ani nie przepisuj. To użytkow
                 title="Postąp zgodnie z obecnym planem",
                 description="Kontynuuj decyzję tak, jak ją opisałeś",
                 consequences=["Działanie zostanie podjęte", "Sytuacja się zmieni"],
-                emotional_risk="Medium",
+                emotional_risk="Średnie",
                 confidence_level=0.5,
             ),
             DecisionOption(
                 title="Poczekaj i zbierz więcej informacji",
                 description="Poświęć czas na badanie i refleksję przed podjęciem decyzji",
                 consequences=["Opóźniona decyzja", "Większa jasność", "Możliwa stracona szansa"],
-                emotional_risk="Low",
+                emotional_risk="Niskie",
                 confidence_level=0.6,
             ),
         ]
