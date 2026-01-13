@@ -68,6 +68,29 @@ docker compose --profile dev down
 - **Dokumentacja API**: http://localhost:8000/docs
 - **Health Check**: http://localhost:8000/health
 
+## 🔧 Rozwiązywanie Problemów
+
+### Błąd: "password authentication failed for user 'decisioncalm'"
+
+Jeśli widzisz błędy uwierzytelniania PostgreSQL, uruchom skrypt naprawczy:
+
+```bash
+# Upewnij się, że masz plik .env z prawidłowymi danymi
+bash scripts/setup-env.sh
+
+# Napraw dane uwierzytelniające w istniejącej bazie
+bash scripts/fix-postgres-credentials.sh
+```
+
+Lub zresetuj bazę danych całkowicie (usuwa wszystkie dane):
+
+```bash
+docker compose down -v
+docker compose --profile dev up --build
+```
+
+📖 **Pełny przewodnik rozwiązywania problemów**: [docs/POSTGRES-TROUBLESHOOTING.md](docs/POSTGRES-TROUBLESHOOTING.md)
+
 ## 📁 Struktura Monorepo
 
 ```
