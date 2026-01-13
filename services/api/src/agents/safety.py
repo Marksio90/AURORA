@@ -119,7 +119,7 @@ Priorytet: Bezpieczeństwo użytkownika ponad wszystko. Bądź ostrożny."""
                     detail=(
                         "Wykryliśmy treść, która może wskazywać na kryzys. "
                         "Ta platforma nie jest przystosowana do wsparcia w sytuacjach kryzysowych. "
-                        "Skontaktuj się z infolinią kryzysową: Polska 116 123, USA 988, EU 116 123"
+                        "Skontaktuj się z infolinią kryzysową: Polska 116 123 | Telefon Zaufania dla Dzieci i Młodzieży 116 111"
                     ),
                     blocked_reason=f"Wykryto potencjalną treść o samookaleczeniu: {keyword}",
                 )

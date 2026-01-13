@@ -259,7 +259,7 @@ class DecisionOrchestrator:
         # Extract control question
         control_question = state.options_output.get(
             "control_question",
-            "What matters most to you in this decision?",
+            "Co jest dla Ciebie najważniejsze w tej decyzji?",
         )
 
         # Generate next check-in suggestion
@@ -267,8 +267,8 @@ class DecisionOrchestrator:
 
         # Ensure disclaimer if safety flagged it
         disclaimer = (
-            "⚠️ This is decision support, not medical or therapeutic advice. "
-            "For emergencies, contact crisis services: US 988, EU 116 123."
+            "⚠️ To wsparcie w podejmowaniu decyzji, nie porada medyczna ani terapeutyczna. "
+            "W nagłych wypadkach: Polska 116 123 | Telefon Zaufania dla Dzieci i Młodzieży 116 111"
         )
 
         return DecisionBrief(
@@ -290,16 +290,16 @@ class DecisionOrchestrator:
         """
         if stress_level >= 7:
             return NextCheckIn(
-                suggestion="30 minutes to 1 hour",
-                reasoning="High stress benefits from a short break before revisiting",
+                suggestion="Za 30 minut do 1 godziny",
+                reasoning="Wysoki poziom stresu wymaga krótkiej przerwy przed ponownym rozważeniem",
             )
         elif stress_level >= 4:
             return NextCheckIn(
-                suggestion="A few hours or tomorrow morning",
-                reasoning="Moderate stress suggests sleeping on it could help",
+                suggestion="Za kilka godzin lub jutro rano",
+                reasoning="Umiarkowany stres sugeruje, że przespanie się z tym może pomóc",
             )
         else:
             return NextCheckIn(
-                suggestion="Whenever you feel ready",
-                reasoning="Your stress level is manageable; take the time you need",
+                suggestion="Kiedy poczujesz się gotowy/a",
+                reasoning="Twój poziom stresu jest do opanowania; poświęć sobie tyle czasu, ile potrzebujesz",
             )
